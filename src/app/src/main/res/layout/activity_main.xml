@@ -7,9 +7,11 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="137dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -17,27 +19,48 @@
             android:text="Hello World!" />
 
         <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
-            <com.example.hiit.MyNumberPicker
-                android:id="@+id/minMyNumberPicker"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Min"
+                android:textAllCaps="true"
+                android:gravity="center_vertical"
+                android:layout_marginRight="10dp" />
+
+            <com.example.hiit.widgets.MyTimePartPicker
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:minValue="0"
+                app:defaultValue="0"
                 app:maxValue="59"
-                app:defaultValue="0"/>
+                app:minValue="0" />
 
-            <com.example.hiit.MyNumberPicker
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=":"
+                android:gravity="center_vertical" />
+
+            <com.example.hiit.widgets.MyTimePartPicker
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:minValue="0"
+                app:defaultValue="10"
                 app:maxValue="59"
-                app:defaultValue="10"/>
+                app:minValue="0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Sec"
+                android:textAllCaps="true"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp" />
 
         </LinearLayout>
-
 
 
     </LinearLayout>

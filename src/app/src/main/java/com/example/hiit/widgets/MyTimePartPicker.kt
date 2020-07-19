@@ -1,10 +1,11 @@
-package com.example.hiit
+package com.example.hiit.widgets
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.NumberPicker
+import com.example.hiit.R
 
-class MyNumberPicker : NumberPicker {
+open class MyTimePartPicker : NumberPicker {
 
     constructor(context: Context) : super(context)
 
@@ -21,15 +22,29 @@ class MyNumberPicker : NumberPicker {
     }
 
     private fun processXmlAttributes(attrs: AttributeSet, defStyleAttr: Int = 0, defStyleRes: Int = 0) {
-        val attributes = context.theme.obtainStyledAttributes(attrs, R.styleable.MyNumberPicker, defStyleAttr, defStyleRes)
+        val attributes = context.theme.obtainStyledAttributes(attrs, R.styleable.MyTimePartPicker, defStyleAttr, defStyleRes)
 
         try {
-            this.minValue = attributes.getInt(R.styleable.MyNumberPicker_minValue, 0)
-            this.maxValue = attributes.getInt(R.styleable.MyNumberPicker_maxValue, 0)
-            this.value = attributes.getInt(R.styleable.MyNumberPicker_defaultValue, 0)
+            minValue = maxOf(attributes.getInt(R.styleable.MyTimePartPicker_minValue, 0), 0)
+            maxValue = maxOf(attributes.getInt(R.styleable.MyTimePartPicker_maxValue, 60), 0)
+            value = maxOf(attributes.getInt(R.styleable.MyTimePartPicker_defaultValue, 0), 0)
         } finally {
             attributes.recycle()
         }
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+
+        if(minValue >= maxValue) {
+            return
+        }
+
+        val range = IntRange(minValue, maxValue)
+
+        val values = range.map { value -> if(value < 10) "0$value" else "$value"; }.toTypedArray()
+
+        displayedValues = values
     }
 
 }

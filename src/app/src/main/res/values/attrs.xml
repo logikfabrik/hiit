@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="MyTimePartPicker">
+    <declare-styleable name="time_part_picker">
         <attr name="maxValue" format="integer" />
         <attr name="minValue" format="integer" />
         <attr name="defaultValue" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="time_picker">
+        <attr name="minDefaultValue" format="integer" />
+        <attr name="secDefaultValue" format="integer" />
     </declare-styleable>
 
 </resources>

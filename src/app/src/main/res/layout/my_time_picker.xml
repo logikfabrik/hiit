@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Min"
-            android:textAllCaps="true"
-            android:gravity="center_vertical"
-            android:layout_marginRight="10dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:text="Min"
+        android:textAllCaps="true" />
 
-        <se.logikfabrik.hiit.widgets.MyTimePartPicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:defaultValue="0"
-            app:maxValue="59"
-            app:minValue="0" />
+    <se.logikfabrik.hiit.widgets.MyTimePartPicker
+        android:id="@+id/min_time_part_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:defaultValue="0"
+        app:maxValue="59"
+        app:minValue="0" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text=":"
-            android:gravity="center_vertical" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:text=":" />
 
-        <se.logikfabrik.hiit.widgets.MyTimePartPicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:defaultValue="10"
-            app:maxValue="59"
-            app:minValue="0" />
+    <se.logikfabrik.hiit.widgets.MyTimePartPicker
+        android:id="@+id/sec_time_part_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:maxValue="59"
+        app:minValue="0" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Sec"
-            android:textAllCaps="true"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
+        android:text="Sec"
+        android:textAllCaps="true" />
 
-    </LinearLayout>
+</LinearLayout>

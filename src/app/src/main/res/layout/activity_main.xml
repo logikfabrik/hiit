@@ -13,57 +13,9 @@
 
         <se.logikfabrik.hiit.widgets.MyTimePicker
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello World!" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Min"
-                android:textAllCaps="true"
-                android:gravity="center_vertical"
-                android:layout_marginRight="10dp" />
-
-            <se.logikfabrik.hiit.widgets.MyTimePartPicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:defaultValue="0"
-                app:maxValue="59"
-                app:minValue="0" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text=":"
-                android:gravity="center_vertical" />
-
-            <se.logikfabrik.hiit.widgets.MyTimePartPicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:defaultValue="10"
-                app:maxValue="59"
-                app:minValue="0" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Sec"
-                android:textAllCaps="true"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="10dp" />
-
-        </LinearLayout>
-
+            app:minDefaultValue="10"
+            app:secDefaultValue="20" />
 
     </LinearLayout>
 

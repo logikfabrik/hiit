@@ -1,4 +1,4 @@
-package com.example.hiit
+package se.logikfabrik.hiit
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

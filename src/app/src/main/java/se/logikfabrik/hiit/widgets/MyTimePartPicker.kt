@@ -1,9 +1,9 @@
-package com.example.hiit.widgets
+package se.logikfabrik.hiit.widgets
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.NumberPicker
-import com.example.hiit.R
+import se.logikfabrik.hiit.R
 
 open class MyTimePartPicker : NumberPicker {
 

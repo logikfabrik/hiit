@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World!" />
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal">
+
+            <com.example.hiit.MyNumberPicker
+                android:id="@+id/minMyNumberPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:minValue="0"
+                app:maxValue="59"
+                app:defaultValue="0"/>
+
+            <com.example.hiit.MyNumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:minValue="0"
+                app:maxValue="59"
+                app:defaultValue="10"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

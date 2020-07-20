@@ -7,6 +7,24 @@ import se.logikfabrik.hiit.R
 
 open class MyTimePartPicker : NumberPicker {
 
+    override fun setMinValue(minValue: Int) {
+        super.setMinValue(minValue)
+
+        refreshValues()
+    }
+
+    override fun setMaxValue(maxValue: Int) {
+        super.setMaxValue(maxValue)
+
+        refreshValues()
+    }
+
+    override fun setValue(value: Int) {
+        super.setValue(value)
+
+        refreshValues()
+    }
+
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
@@ -28,15 +46,15 @@ open class MyTimePartPicker : NumberPicker {
     ) {
         val attributes = context.theme.obtainStyledAttributes(
             attrs,
-            R.styleable.time_part_picker,
+            R.styleable.picker,
             defStyleAttr,
             defStyleRes
         )
 
         try {
-            minValue = maxOf(attributes.getInt(R.styleable.time_part_picker_minValue, 0), 0)
-            maxValue = maxOf(attributes.getInt(R.styleable.time_part_picker_maxValue, 60), 0)
-            value = maxOf(attributes.getInt(R.styleable.time_part_picker_defaultValue, 0), 0)
+            minValue = maxOf(attributes.getInt(R.styleable.picker_minValue, 0), 0)
+            maxValue = maxOf(attributes.getInt(R.styleable.picker_maxValue, 60), 0)
+            value = maxOf(attributes.getInt(R.styleable.picker_defaultValue, 0), 0)
         } finally {
             attributes.recycle()
         }
@@ -45,9 +63,11 @@ open class MyTimePartPicker : NumberPicker {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        if (minValue >= maxValue) {
-            displayedValues = arrayOf<String>()
+        refreshValues()
+    }
 
+    private fun refreshValues() {
+        if (minValue >= maxValue) {
             return
         }
 

@@ -8,12 +8,24 @@ import se.logikfabrik.hiit.R
 
 class MyTimePicker : LinearLayout {
 
-    var minDefaultValue: Int = 0
+    var defaultValue: Int = 0
+        get() {
+            return field
+        }
+        set(value) {
+            field = value
 
-    var secDefaultValue: Int = 0
+            minDefaultValue = field / 60
+            secDefaultValue = field % 60
 
-    private lateinit var minTimePartPicker: MyTimePartPicker
-    private lateinit var secTimePartPicker: MyTimePartPicker
+            refreshValues()
+        }
+
+    private var minDefaultValue: Int = 0
+    private var secDefaultValue: Int = 0
+
+    private var minTimePartPicker: MyTimePartPicker? = null
+    private var secTimePartPicker: MyTimePartPicker? = null
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         setXmlAttributes(attrs)
@@ -42,16 +54,14 @@ class MyTimePicker : LinearLayout {
     ) {
         val attributes = context.theme.obtainStyledAttributes(
             attrs,
-            R.styleable.time_picker,
+            R.styleable.picker,
             defStyleAttr,
             defStyleRes
         )
 
         try {
-            minDefaultValue =
-                maxOf(attributes.getInt(R.styleable.time_picker_minDefaultValue, 0), 0)
-            secDefaultValue =
-                maxOf(attributes.getInt(R.styleable.time_picker_secDefaultValue, 0), 0)
+            defaultValue =
+                maxOf(attributes.getInt(R.styleable.picker_defaultValue, 0), 0)
         } finally {
             attributes.recycle()
         }
@@ -60,10 +70,14 @@ class MyTimePicker : LinearLayout {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        minTimePartPicker = findViewById<MyTimePartPicker>(R.id.min_time_part_picker)
-        minTimePartPicker.value = minDefaultValue
+        refreshValues()
+    }
 
-        secTimePartPicker = findViewById<MyTimePartPicker>(R.id.sec_time_part_picker)
-        secTimePartPicker.value = secDefaultValue
+    private fun refreshValues() {
+        minTimePartPicker = minTimePartPicker ?: findViewById(R.id.min_time_part_picker)
+        minTimePartPicker?.value = minDefaultValue
+
+        secTimePartPicker = secTimePartPicker ?: findViewById(R.id.sec_time_part_picker)
+        secTimePartPicker?.value = secDefaultValue
     }
 }

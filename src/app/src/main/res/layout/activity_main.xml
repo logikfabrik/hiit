@@ -11,11 +11,35 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Work" />
+
         <se.logikfabrik.hiit.widgets.MyTimePicker
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:minDefaultValue="10"
-            app:secDefaultValue="20" />
+            app:defaultValue="40" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rest" />
+
+        <se.logikfabrik.hiit.widgets.MyTimePicker
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:defaultValue="10" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sets" />
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 

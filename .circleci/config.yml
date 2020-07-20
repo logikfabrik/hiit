@@ -12,4 +12,5 @@ jobs:
       - run:
           command: |
             cd src
+            chmod +x ./gradlew
             ./gradlew build

@@ -15,8 +15,6 @@ class MyTimePicker : LinearLayout {
     private lateinit var minTimePartPicker: MyTimePartPicker
     private lateinit var secTimePartPicker: MyTimePartPicker
 
-
-
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         setXmlAttributes(attrs)
 
@@ -59,7 +57,6 @@ class MyTimePicker : LinearLayout {
         }
     }
 
-
     override fun onFinishInflate() {
         super.onFinishInflate()
 
@@ -69,5 +66,4 @@ class MyTimePicker : LinearLayout {
         secTimePartPicker = findViewById<MyTimePartPicker>(R.id.sec_time_part_picker)
         secTimePartPicker.value = secDefaultValue
     }
-
 }

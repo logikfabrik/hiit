@@ -10,4 +10,4 @@ jobs:
     steps:
       - checkout
       - run:
-          command: cd src && ./gradlew build
+          command: cd src && gradlew build

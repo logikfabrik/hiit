@@ -7,7 +7,9 @@ jobs:
   build:
     executor: android/android
 
+    working_directory: ~/src
+
     steps:
       - checkout
       - run:
-          command: ~/src/gradlew build
+          command: gradlew build

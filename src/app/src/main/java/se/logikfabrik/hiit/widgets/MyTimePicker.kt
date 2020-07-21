@@ -6,41 +6,25 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.NumberPicker
 import se.logikfabrik.hiit.R
+import java.beans.PropertyChangeSupport
 
 class MyTimePicker : LinearLayout {
 
-    private var defaultValue: Int = 0
+    val propertyChangeSupport: PropertyChangeSupport = PropertyChangeSupport(this)
+
+    var value: Int
+        get() = ((minutesNumberPicker?.value ?: 0) * 60) + (secondsNumberPicker?.value ?: 0)
+        set(value) {
+            propertyChangeSupport.firePropertyChange("value", null, null)
+
+            minutesNumberPicker?.value = value / 60
+            secondsNumberPicker?.value = value % 60
+        }
 
     private var minutesNumberPicker: NumberPicker? = null
     private var secondsNumberPicker: NumberPicker? = null
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        readXmlAttributes(attrs)
-
-        inflate()
-    }
-
-    private fun readXmlAttributes(
-        attrs: AttributeSet,
-        defStyleAttr: Int = 0,
-        defStyleRes: Int = 0
-    ) {
-        val attributes = context.theme.obtainStyledAttributes(
-            attrs,
-            R.styleable.myTimePicker,
-            defStyleAttr,
-            defStyleRes
-        )
-
-        try {
-            defaultValue =
-                maxOf(attributes.getInt(R.styleable.myTimePicker_defaultValue, 0), 0)
-        } finally {
-            attributes.recycle()
-        }
-    }
-
-    private fun inflate() {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         inflater.inflate(R.layout.my_time_picker, this, true)
@@ -65,9 +49,13 @@ class MyTimePicker : LinearLayout {
                 range.map { value -> if (value < 10) "0$value" else "$value"; }.toTypedArray()
 
             it?.displayedValues = values
+
+            it?.setOnValueChangedListener { _, _, _ ->
+                propertyChangeSupport.firePropertyChange("value", null, null)
+            }
         }
 
-        minutesNumberPicker?.value = defaultValue / 60
-        secondsNumberPicker?.value = defaultValue % 60
+        minutesNumberPicker?.value = value / 60
+        secondsNumberPicker?.value = value % 60
     }
 }

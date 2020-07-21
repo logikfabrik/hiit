@@ -28,9 +28,9 @@
 
 
             <se.logikfabrik.hiit.widgets.MyTimePicker
+                android:id="@+id/work_myTimePicker"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:defaultValue="40" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -38,16 +38,16 @@
                 android:text="Rest" />
 
             <se.logikfabrik.hiit.widgets.MyTimePicker
+                android:id="@+id/rest_myTimePicker"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:defaultValue="10" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sets" />
 
-            <NumberPicker
+            <NumberPicker android:id="@+id/sets_numberPicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal" />

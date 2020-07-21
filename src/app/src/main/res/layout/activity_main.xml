@@ -6,41 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Work" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <se.logikfabrik.hiit.widgets.MyTimePicker
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:defaultValue="40" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Work" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Rest" />
 
-        <se.logikfabrik.hiit.widgets.MyTimePicker
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:defaultValue="10" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sets" />
 
-        <NumberPicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
+            <se.logikfabrik.hiit.widgets.MyTimePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:defaultValue="40" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rest" />
 
+            <se.logikfabrik.hiit.widgets.MyTimePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:defaultValue="10" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sets" />
+
+            <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:id="@+id/start_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start" />
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

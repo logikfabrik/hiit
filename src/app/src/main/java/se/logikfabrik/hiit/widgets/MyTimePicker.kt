@@ -17,9 +17,7 @@ class MyTimePicker : LinearLayout {
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         readXmlAttributes(attrs)
 
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        inflater.inflate(R.layout.my_time_picker, this, true)
+        inflate()
     }
 
     private fun readXmlAttributes(
@@ -40,6 +38,12 @@ class MyTimePicker : LinearLayout {
         } finally {
             attributes.recycle()
         }
+    }
+
+    private fun inflate() {
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        inflater.inflate(R.layout.my_time_picker, this, true)
     }
 
     override fun onFinishInflate() {

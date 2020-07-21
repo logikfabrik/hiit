@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="picker">
-        <attr name="maxValue" format="integer" />
-        <attr name="minValue" format="integer" />
+    <declare-styleable name="myTimePicker">
         <attr name="defaultValue" format="integer" />
     </declare-styleable>
 

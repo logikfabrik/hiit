@@ -4,64 +4,39 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import android.widget.NumberPicker
 import se.logikfabrik.hiit.R
 
 class MyTimePicker : LinearLayout {
 
-    var defaultValue: Int = 0
-        get() {
-            return field
-        }
-        set(value) {
-            field = value
+    private var defaultValue: Int = 0
 
-            minDefaultValue = field / 60
-            secDefaultValue = field % 60
-
-            refreshValues()
-        }
-
-    private var minDefaultValue: Int = 0
-    private var secDefaultValue: Int = 0
-
-    private var minTimePartPicker: MyTimePartPicker? = null
-    private var secTimePartPicker: MyTimePartPicker? = null
+    private var minutesNumberPicker: NumberPicker? = null
+    private var secondsNumberPicker: NumberPicker? = null
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        setXmlAttributes(attrs)
+        readXmlAttributes(attrs)
 
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         inflater.inflate(R.layout.my_time_picker, this, true)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
-        setXmlAttributes(attrs, defStyleAttr)
-
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-        inflater.inflate(R.layout.my_time_picker, this, true)
-    }
-
-    private fun setXmlAttributes(
+    private fun readXmlAttributes(
         attrs: AttributeSet,
         defStyleAttr: Int = 0,
         defStyleRes: Int = 0
     ) {
         val attributes = context.theme.obtainStyledAttributes(
             attrs,
-            R.styleable.picker,
+            R.styleable.myTimePicker,
             defStyleAttr,
             defStyleRes
         )
 
         try {
             defaultValue =
-                maxOf(attributes.getInt(R.styleable.picker_defaultValue, 0), 0)
+                maxOf(attributes.getInt(R.styleable.myTimePicker_defaultValue, 0), 0)
         } finally {
             attributes.recycle()
         }
@@ -70,14 +45,25 @@ class MyTimePicker : LinearLayout {
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        refreshValues()
-    }
+        minutesNumberPicker = findViewById(R.id.minutes_numberPicker)
+        secondsNumberPicker = findViewById(R.id.seconds_numberPicker)
 
-    private fun refreshValues() {
-        minTimePartPicker = minTimePartPicker ?: findViewById(R.id.min_time_part_picker)
-        minTimePartPicker?.value = minDefaultValue
+        arrayOf(minutesNumberPicker, secondsNumberPicker).forEach {
+            val minValue = 0
+            val maxValue = 59
 
-        secTimePartPicker = secTimePartPicker ?: findViewById(R.id.sec_time_part_picker)
-        secTimePartPicker?.value = secDefaultValue
+            it?.minValue = minValue
+            it?.maxValue = maxValue
+
+            val range = IntRange(minValue, maxValue)
+
+            val values =
+                range.map { value -> if (value < 10) "0$value" else "$value"; }.toTypedArray()
+
+            it?.displayedValues = values
+        }
+
+        minutesNumberPicker?.value = defaultValue / 60
+        secondsNumberPicker?.value = defaultValue % 60
     }
 }

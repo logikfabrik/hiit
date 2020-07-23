@@ -11,4 +11,6 @@
 
     <color name="purpleLight" type="color">#8d23c1</color>
     <color name="purpleDark" type="color">#711c9b</color>
+    <color name="orangeDark" type="color">#ff610f</color>
+    <color name="greyDark" type="color">#333333</color>
 </resources>

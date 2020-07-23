@@ -3,4 +3,12 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+
+
+
+
+
+    <color name="purpleLight" type="color">#8d23c1</color>
+    <color name="purpleDark" type="color">#711c9b</color>
 </resources>

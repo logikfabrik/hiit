@@ -1,8 +1,6 @@
 package se.logikfabrik.hiit.widgets
 
-import android.R.attr
 import android.animation.PropertyValuesHolder
-import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.content.Context
@@ -10,12 +8,10 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.OvershootInterpolator
+import se.logikfabrik.hiit.R
 import java.util.Collections.rotate
-
 
 class Element(context: Context, attrs: AttributeSet) : View(context, attrs) {
     /*
@@ -30,21 +26,17 @@ class Element(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private var animator: ValueAnimator? = null
 
-
     override fun onFinishInflate() {
         super.onFinishInflate()
 
         val min = minOf(width, height)
-
-
     }
 
     fun doStuff() {
         animator!!.start()
     }
 
-    var radius // at the beggining radius equals 0
-            = 0
+    var radius = 0
 
     var rotate = 0
 
@@ -53,16 +45,13 @@ class Element(context: Context, attrs: AttributeSet) : View(context, attrs) {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
+        val min = (minOf(width, height) * 0.9).toFloat()
 
-        val min = (minOf(width, height) * 0.8).toFloat()
+        // canvas.drawRect(0F, 0F, width.toFloat(), height.toFloat(), Paint().apply { color = Color.RED })
 
+        // canvas.scale(scale, scale, (width / 2).toFloat(), (height/ 2).toFloat())
 
-
-        //canvas.drawRect(0F, 0F, width.toFloat(), height.toFloat(), Paint().apply { color = Color.RED })
-
-        //canvas.scale(scale, scale, (width / 2).toFloat(), (height/ 2).toFloat())
-
-        canvas.rotate(rotate.toFloat(), (width / 2).toFloat(), (height / 2).toFloat());
+        canvas.rotate(rotate.toFloat(), (width / 2).toFloat(), (height / 2).toFloat())
 
         canvas.drawRoundRect(
             (width - min),
@@ -74,9 +63,6 @@ class Element(context: Context, attrs: AttributeSet) : View(context, attrs) {
             Paint().apply { color = Color.GREEN }
         )
 
-
-
-
         if (animator != null) {
             return
         }
@@ -84,27 +70,26 @@ class Element(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val propertyRadius: PropertyValuesHolder =
             PropertyValuesHolder.ofInt("PROPERTY_RADIUS", 0, (min / 2).toInt())
         val propertyRotate: PropertyValuesHolder =
-            PropertyValuesHolder.ofInt("PROPERTY_ROTATE", 0, 360)
+            PropertyValuesHolder.ofInt("PROPERTY_ROTATE", 0, 180)
 
         val propertyScale: PropertyValuesHolder =
             PropertyValuesHolder.ofFloat("PROPERTY_SCALE", 1F, 0.2F)
 
-
-
         animator = ValueAnimator()
         animator?.interpolator = AccelerateDecelerateInterpolator()
-        animator?.setValues(propertyRadius,propertyRotate, propertyScale)
-        animator?.setDuration(1000)
+        animator?.setValues(propertyRadius, propertyRotate, propertyScale)
+        animator?.duration = getResources().getInteger(android.R.integer.config_mediumAnimTime).toLong()
         animator?.repeatCount = 0
 
-        animator?.addUpdateListener(AnimatorUpdateListener { animation ->
-            radius = animation.getAnimatedValue("PROPERTY_RADIUS") as Int
-            rotate = animation.getAnimatedValue("PROPERTY_ROTATE") as Int
-            // scale = animation.getAnimatedValue("PROPERTY_SCALE") as Float
+        animator?.addUpdateListener(
+            AnimatorUpdateListener { animation ->
+                radius = animation.getAnimatedValue("PROPERTY_RADIUS") as Int
+                rotate = animation.getAnimatedValue("PROPERTY_ROTATE") as Int
+                // scale = animation.getAnimatedValue("PROPERTY_SCALE") as Float
 
-
-            invalidate()
-        })
-        //animator?.start()
+                invalidate()
+            }
+        )
+        // animator?.start()
     }
 }

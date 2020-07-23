@@ -11,7 +11,7 @@ class TimerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //To support reverse transitions when user clicks the device back button
+        // To support reverse transitions when user clicks the device back button
         supportFinishAfterTransition()
     }
 

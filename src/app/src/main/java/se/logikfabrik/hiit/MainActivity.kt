@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.widget.Button
 import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
 import se.logikfabrik.hiit.widgets.Element
@@ -17,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private var restMyTimePicker: MyTimePicker? = null
     private var setsNumberPicker: NumberPicker? = null
 
-    private var startButton: Button? = null
+    private var startButton: Element? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,29 +46,25 @@ class MainActivity : AppCompatActivity() {
             setValues()
         }
 
-        startButton = findViewById(R.id.start_button)
+        startButton = findViewById(R.id.shared_element)
 
         startButton?.setOnClickListener {
             val intent = Intent(this, TimerActivity::class.java)
 
-            val sharedElement = findViewById<Element>(R.id.shared_element)
-
-
-
             val options = ActivityOptions
-                .makeSceneTransitionAnimation(this, sharedElement, "robot")
+                .makeSceneTransitionAnimation(this, it, "robot")
             // start the new activity
 
-            sharedElement.doStuff()
+            (it as Element).doStuff()
 
+            Handler().postDelayed(
+                {
+                    startActivity(intent, options.toBundle())
+                },
+                1000
+            )
 
-            Handler().postDelayed({
-                startActivity(intent, options.toBundle())
-            }, 1000)
-
-
-
-            //startActivity(intent, )
+            // startActivity(intent, )
         }
     }
 

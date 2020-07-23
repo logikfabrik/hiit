@@ -1,11 +1,14 @@
 package se.logikfabrik.hiit
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Button
 import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
+import se.logikfabrik.hiit.widgets.Element
 import se.logikfabrik.hiit.widgets.MyTimePicker
 
 class MainActivity : AppCompatActivity() {
@@ -49,7 +52,24 @@ class MainActivity : AppCompatActivity() {
         startButton?.setOnClickListener {
             val intent = Intent(this, TimerActivity::class.java)
 
-            startActivity(intent)
+            val sharedElement = findViewById<Element>(R.id.shared_element)
+
+
+
+            val options = ActivityOptions
+                .makeSceneTransitionAnimation(this, sharedElement, "robot")
+            // start the new activity
+
+            sharedElement.doStuff()
+
+
+            Handler().postDelayed({
+                startActivity(intent, options.toBundle())
+            }, 1000)
+
+
+
+            //startActivity(intent, )
         }
     }
 

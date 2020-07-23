@@ -6,4 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".TimerActivity">
 
+    <se.logikfabrik.hiit.widgets.EndElement
+        android:id="@+id/shared_element"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:transitionName="robot" />
 </androidx.constraintlayout.widget.ConstraintLayout>

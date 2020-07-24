@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        window.decorView.setBackgroundColor(resources.getColor(R.color.purpleLight, null));
+        window.decorView.setBackgroundColor(resources.getColor(R.color.purpleLight, null))
 
         workMyTimePicker = findViewById(R.id.work_myTimePicker)
         workMyTimePicker?.value = 40
@@ -71,8 +71,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setValues() {
-        val totalTime = ((workMyTimePicker?.value ?: 0) + (restMyTimePicker?.value
-            ?: 0)) * (setsNumberPicker?.value ?: 0)
+        val totalTime = (
+            (workMyTimePicker?.value ?: 0) + (
+                restMyTimePicker?.value
+                    ?: 0
+                )
+            ) * (setsNumberPicker?.value ?: 0)
 
         Log.i(null, totalTime.toString())
     }

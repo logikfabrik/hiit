@@ -12,14 +12,33 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
-    private var outerRadius: Float? = null
-    private var innerRadius: Float? = null
+    var currentTime: Int = 90
+        set(value) {
+            require(value <= currentTimeElapsed) { "Current time must be greater than or equal to current time elapsed." }
 
-    var currentTime: Int = 0
-    var currentTimeElapsed: Int = 0
+            field = value
+        }
 
-    var totalTime: Int = 0
-    var totalTimeElapsed: Int = 0
+    var currentTimeElapsed: Int = 80
+        set(value) {
+            require(value >= currentTime) { "Current time elapsed must be less than or equal to current time." }
+
+            field = value
+        }
+
+    var totalTime: Int = 100
+        set(value) {
+            require(value <= totalTimeElapsed) { "Total time must be greater than or equal to total time elapsed." }
+
+            field = value
+        }
+
+    var totalTimeElapsed: Int = 70
+        set(value) {
+            require(value >= totalTime) { "Total time elapsed must be less than or equal to total time." }
+
+            field = value
+        }
 
     private val dialPaint = Paint().apply {
         isAntiAlias = true
@@ -39,69 +58,65 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        var min = minOf(width, height).toFloat()
+        val cx = width / 2.toFloat()
+        val cy = height / 2.toFloat()
 
-        var outerRadius = min / 2
+        canvas.rotate(-90F, cx, cy)
 
-        var innerRadius = (0.95 * outerRadius).toFloat()
+        val totalTimeOuterRadius = minOf(width, height) / 2.toFloat()
 
-        //canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), outerRadius!!, dialPaint)
-        canvas.rotate(-90F, (width / 2).toFloat(), (height / 2).toFloat())
+        val totalTimeInnerRadius = totalTimeOuterRadius * 0.95.toFloat()
+
+        val currentTimeOuterRadius = totalTimeInnerRadius
+
+        val currentTimeInnerRadius = currentTimeOuterRadius * 0.8.toFloat()
+
+        // Draw arc for dial
         drawArcSegment(
             canvas,
-            (width / 2).toFloat(),
-            (height / 2).toFloat(),
-            (innerRadius!! * 0.8).toFloat(),
-            outerRadius!!,
-            0F,
+            cx,
+            cy,
+            totalTimeOuterRadius,
+            currentTimeInnerRadius,
             CIRCLE_LIMIT,
             dialPaint
-
         )
 
         // Draw arc for total time
-
+        val totalTimeAngle = (totalTimeElapsed / totalTime.toFloat()) * CIRCLE_LIMIT
 
         drawArcSegment(
             canvas,
-            (width / 2).toFloat(),
-            (height / 2).toFloat(),
-            innerRadius!!,
-            outerRadius!!,
-            0F,
-            60F,
+            cx,
+            cy,
+            totalTimeOuterRadius,
+            totalTimeInnerRadius,
+            totalTimeAngle,
             totalTimePaint
-
         )
 
         // Draw arc for current time
-
+        val currentTimeAngle = (currentTimeElapsed / currentTime.toFloat()) * CIRCLE_LIMIT
 
         drawArcSegment(
             canvas,
-            (width / 2).toFloat(),
-            (height / 2).toFloat(),
-            (innerRadius!! * 0.8).toFloat(),
-            innerRadius!!,
-            0F,
-            150F,
+            cx,
+            cy,
+            currentTimeOuterRadius,
+            currentTimeInnerRadius,
+            currentTimeAngle,
             currentTimePaint
-
         )
-
-
     }
 
     private val CIRCLE_LIMIT = 359.9999f
 
-
-    fun drawArcSegment(
+    private fun drawArcSegment(
         canvas: Canvas,
         cx: Float,
         cy: Float,
-        rInn: Float,
         rOut: Float,
-        startAngle: Float,
+        rInn: Float,
         sweepAngle: Float,
         fill: Paint
     ) {
@@ -115,28 +130,24 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
             sweepAngle = -CIRCLE_LIMIT
         }
 
+        val outerOval = RectF(cx - rOut, cy - rOut, cx + rOut, cy + rOut)
 
+        val innerOval = RectF(cx - rInn, cy - rInn, cx + rInn, cy + rInn)
 
-        val outerRect = RectF(cx - rOut, cy - rOut, cx + rOut, cy + rOut)
+        val segmentPath = Path().also {
+            // https://stackoverflow.com/questions/3874424/android-looking-for-a-drawarc-method-with-inner-outer-radius
+            it.moveTo(
+                (cx + rInn * cos(0.0)).toFloat(),
+                (cy + rInn * sin(0.0)).toFloat()
+            )
 
-        val innerRect = RectF(cx - rInn, cy - rInn, cx + rInn, cy + rInn)
+            it.arcTo(outerOval, 0F, sweepAngle)
 
-        val segmentPath = Path()
+            it.arcTo(innerOval, sweepAngle, -sweepAngle, false)
 
-        val start: Double = Math.toRadians(startAngle.toDouble())
-// https://stackoverflow.com/questions/3874424/android-looking-for-a-drawarc-method-with-inner-outer-radius
-        segmentPath.moveTo(
-            (cx + rInn * cos(start)).toFloat(),
-            (cy + rInn * sin(start)).toFloat()
-        )
-        segmentPath.arcTo(outerRect, startAngle, sweepAngle)
+            it.close()
+        }
 
-        segmentPath.arcTo(innerRect, startAngle + sweepAngle, -sweepAngle, false)
-
-        segmentPath.close()
-
-
-            canvas.drawPath(segmentPath, fill)
-
+        canvas.drawPath(segmentPath, fill)
     }
 }

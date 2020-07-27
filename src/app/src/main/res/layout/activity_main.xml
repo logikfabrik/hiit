@@ -20,7 +20,7 @@
                 android:layout_height="200dp">
 
                 <se.logikfabrik.hiit.widgets.MyTimer
-                    android:id="@+id/circle"
+                    android:id="@+id/timer_myTimer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -43,14 +43,24 @@
                         android:layout_height="wrap_content"
                         android:text="Exercise"
 
-                        />
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="00:40"
 
-                        />
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="03:40"
+
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                 </LinearLayout>
 

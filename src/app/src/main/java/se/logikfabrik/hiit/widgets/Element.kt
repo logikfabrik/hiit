@@ -2,7 +2,6 @@ package se.logikfabrik.hiit.widgets
 
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
-import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -81,15 +80,13 @@ class Element(context: Context, attrs: AttributeSet) : View(context, attrs) {
         animator?.duration = getResources().getInteger(android.R.integer.config_mediumAnimTime).toLong()
         animator?.repeatCount = 0
 
-        animator?.addUpdateListener(
-            AnimatorUpdateListener { animation ->
-                radius = animation.getAnimatedValue("PROPERTY_RADIUS") as Int
-                rotate = animation.getAnimatedValue("PROPERTY_ROTATE") as Int
-                // scale = animation.getAnimatedValue("PROPERTY_SCALE") as Float
+        animator?.addUpdateListener { animation ->
+            radius = animation.getAnimatedValue("PROPERTY_RADIUS") as Int
+            rotate = animation.getAnimatedValue("PROPERTY_ROTATE") as Int
+            // scale = animation.getAnimatedValue("PROPERTY_SCALE") as Float
 
-                invalidate()
-            }
-        )
+            invalidate()
+        }
         // animator?.start()
     }
 }

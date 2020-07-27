@@ -12,32 +12,56 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
-    var currentTime: Int = 90
+    var currentTime: Int = 0
         set(value) {
-            require(value <= currentTimeElapsed) { "Current time must be greater than or equal to current time elapsed." }
+            require(value >= currentTimeElapsed) { "Current time must be greater than or equal to current time elapsed." }
+
+            if (field == value) {
+                return
+            }
 
             field = value
+
+            invalidate()
         }
 
-    var currentTimeElapsed: Int = 80
+    var currentTimeElapsed: Int = 0
         set(value) {
-            require(value >= currentTime) { "Current time elapsed must be less than or equal to current time." }
+            require(value <= currentTime) { "Current time elapsed must be less than or equal to current time." }
+
+            if (field == value) {
+                return
+            }
 
             field = value
+
+            invalidate()
         }
 
-    var totalTime: Int = 100
+    var totalTime: Int = 0
         set(value) {
-            require(value <= totalTimeElapsed) { "Total time must be greater than or equal to total time elapsed." }
+            require(value >= totalTimeElapsed) { "Total time must be greater than or equal to total time elapsed." }
+
+            if (field == value) {
+                return
+            }
 
             field = value
+
+            invalidate()
         }
 
-    var totalTimeElapsed: Int = 70
+    var totalTimeElapsed: Int = 0
         set(value) {
-            require(value >= totalTime) { "Total time elapsed must be less than or equal to total time." }
+            require(value <= totalTime) { "Total time elapsed must be less than or equal to total time." }
+
+            if (field == value) {
+                return
+            }
 
             field = value
+
+            invalidate()
         }
 
     private val dialPaint = Paint().apply {
@@ -83,7 +107,7 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         )
 
         // Draw arc for total time
-        val totalTimeAngle = (totalTimeElapsed / totalTime.toFloat()) * CIRCLE_LIMIT
+        val totalTimeAngle = (1 - totalTimeElapsed / totalTime.toFloat()) * CIRCLE_LIMIT
 
         drawArcSegment(
             canvas,
@@ -96,7 +120,7 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         )
 
         // Draw arc for current time
-        val currentTimeAngle = (currentTimeElapsed / currentTime.toFloat()) * CIRCLE_LIMIT
+        val currentTimeAngle = (1 - currentTimeElapsed / currentTime.toFloat()) * CIRCLE_LIMIT
 
         drawArcSegment(
             canvas,

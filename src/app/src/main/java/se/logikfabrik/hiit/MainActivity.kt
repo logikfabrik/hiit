@@ -9,8 +9,12 @@ import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
 import se.logikfabrik.hiit.widgets.Element
 import se.logikfabrik.hiit.widgets.MyTimePicker
+import se.logikfabrik.hiit.widgets.MyTimer
+import se.logikfabrik.hiit.widgets.MyTimerStartAnimator
 
 class MainActivity : AppCompatActivity() {
+
+    private var timerMyTimer: MyTimer? = null
 
     private var workMyTimePicker: MyTimePicker? = null
     private var restMyTimePicker: MyTimePicker? = null
@@ -23,6 +27,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         window.decorView.setBackgroundColor(resources.getColor(R.color.purpleLight, null))
+
+        timerMyTimer = findViewById(R.id.timer_myTimer)
+
+        timerMyTimer?.currentTime = 100
+        timerMyTimer?.currentTimeElapsed = 50
+
+        timerMyTimer?.totalTime = 200
+        timerMyTimer?.totalTimeElapsed = 50
+
+        val animator = MyTimerStartAnimator(timerMyTimer!!)
+
+        animator.start()
 
         workMyTimePicker = findViewById(R.id.work_myTimePicker)
         workMyTimePicker?.value = 40

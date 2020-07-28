@@ -10,12 +10,12 @@ class MyTimerStartAnimator {
     private val _animator: ValueAnimator = ValueAnimator()
 
     constructor(timer: MyTimer) {
-        val currentTimeHolder = PropertyValuesHolder.ofInt(
+        val currentTimeHolder = PropertyValuesHolder.ofFloat(
             "CURRENT_TIME_ELAPSED",
             timer.currentTime,
             timer.currentTimeElapsed
         )
-        val totalTimeHolder = PropertyValuesHolder.ofInt(
+        val totalTimeHolder = PropertyValuesHolder.ofFloat(
             "TOTAL_TIME_ELAPSED",
             timer.totalTime,
             timer.totalTimeElapsed
@@ -28,8 +28,8 @@ class MyTimerStartAnimator {
         _animator.repeatCount = 0
 
         _animator.addUpdateListener { animator ->
-            timer.currentTimeElapsed = animator.getAnimatedValue("CURRENT_TIME_ELAPSED") as Int
-            timer.totalTimeElapsed = animator.getAnimatedValue("TOTAL_TIME_ELAPSED") as Int
+            timer.currentTimeElapsed = animator.getAnimatedValue("CURRENT_TIME_ELAPSED") as Float
+            timer.totalTimeElapsed = animator.getAnimatedValue("TOTAL_TIME_ELAPSED") as Float
         }
     }
 

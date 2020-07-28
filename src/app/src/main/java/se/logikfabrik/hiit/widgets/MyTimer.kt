@@ -8,13 +8,12 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import se.logikfabrik.hiit.R
-import kotlin.math.cos
-import kotlin.math.sin
 
 class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
-    var currentTime: Int = 0
+    var currentTime = 0F
         set(value) {
             require(value >= currentTimeElapsed) { "Current time must be greater than or equal to current time elapsed." }
+            require(value >= 0) { "Current time must be greater than or equal to 0." }
 
             if (field == value) {
                 return
@@ -25,9 +24,10 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
             invalidate()
         }
 
-    var currentTimeElapsed: Int = 0
+    var currentTimeElapsed = 0F
         set(value) {
             require(value <= currentTime) { "Current time elapsed must be less than or equal to current time." }
+            require(value >= 0) { "Current time elapsed must be greater than or equal to 0." }
 
             if (field == value) {
                 return
@@ -38,9 +38,10 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
             invalidate()
         }
 
-    var totalTime: Int = 0
+    var totalTime = 0F
         set(value) {
             require(value >= totalTimeElapsed) { "Total time must be greater than or equal to total time elapsed." }
+            require(value >= 0) { "Total time must be greater than or equal to 0." }
 
             if (field == value) {
                 return
@@ -51,9 +52,10 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
             invalidate()
         }
 
-    var totalTimeElapsed: Int = 0
+    var totalTimeElapsed = 0F
         set(value) {
             require(value <= totalTime) { "Total time elapsed must be less than or equal to total time." }
+            require(value >= 0) { "Total time elapsed must be greater than or equal to 0." }
 
             if (field == value) {
                 return
@@ -67,16 +69,22 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val dialPaint = Paint().apply {
         isAntiAlias = true
         color = resources.getColor(R.color.greyDark, null)
+        style = Paint.Style.STROKE
+        strokeWidth = 50F
     }
 
     private val currentTimePaint = Paint().apply {
         isAntiAlias = true
         color = resources.getColor(R.color.purpleDark, null)
+        style = Paint.Style.STROKE
+        strokeWidth = 40F
     }
 
     private val totalTimePaint = Paint().apply {
         isAntiAlias = true
         color = resources.getColor(R.color.orangeDark, null)
+        style = Paint.Style.STROKE
+        strokeWidth = 10F
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -87,91 +95,48 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         canvas.rotate(-90F, cx, cy)
 
-        val totalTimeOuterRadius = minOf(width, height) / 2.toFloat()
+        val r = minOf(width, height) / 2.toFloat()
 
-        val totalTimeInnerRadius = totalTimeOuterRadius * 0.95.toFloat()
+        val dialRect = RectF(cx - r, cy - r, cx + r, cy + r)
 
-        val currentTimeOuterRadius = totalTimeInnerRadius
+        dialRect.inset(dialPaint.strokeWidth / 2, dialPaint.strokeWidth / 2)
 
-        val currentTimeInnerRadius = currentTimeOuterRadius * 0.8.toFloat()
+        canvas.drawOval(dialRect, dialPaint)
 
-        // Draw arc for dial
-        drawArcSegment(
-            canvas,
-            cx,
-            cy,
-            totalTimeOuterRadius,
-            currentTimeInnerRadius,
-            CIRCLE_LIMIT,
-            dialPaint
-        )
+        drawArcForTotalTime(canvas, dialRect)
 
-        // Draw arc for total time
-        val totalTimeAngle = (1 - totalTimeElapsed / totalTime.toFloat()) * CIRCLE_LIMIT
-
-        drawArcSegment(
-            canvas,
-            cx,
-            cy,
-            totalTimeOuterRadius,
-            totalTimeInnerRadius,
-            totalTimeAngle,
-            totalTimePaint
-        )
-
-        // Draw arc for current time
-        val currentTimeAngle = (1 - currentTimeElapsed / currentTime.toFloat()) * CIRCLE_LIMIT
-
-        drawArcSegment(
-            canvas,
-            cx,
-            cy,
-            currentTimeOuterRadius,
-            currentTimeInnerRadius,
-            currentTimeAngle,
-            currentTimePaint
-        )
+        drawArcForCurrentTime(canvas, dialRect)
     }
 
-    private val CIRCLE_LIMIT = 359.9999f
+    private fun drawArcForCurrentTime(canvas: Canvas, rect: RectF) {
+        val currentTimeRect = RectF(rect)
 
-    private fun drawArcSegment(
-        canvas: Canvas,
-        cx: Float,
-        cy: Float,
-        rOut: Float,
-        rInn: Float,
-        sweepAngle: Float,
-        fill: Paint
-    ) {
-        var sweepAngle = sweepAngle
+        val currentTimeWidth = (dialPaint.strokeWidth / 2) - (currentTimePaint.strokeWidth / 2)
 
-        if (sweepAngle > CIRCLE_LIMIT) {
-            sweepAngle = CIRCLE_LIMIT
-        }
+        currentTimeRect.inset(currentTimeWidth, currentTimeWidth)
 
-        if (sweepAngle < -CIRCLE_LIMIT) {
-            sweepAngle = -CIRCLE_LIMIT
-        }
+        val currentTimePath = Path()
 
-        val outerOval = RectF(cx - rOut, cy - rOut, cx + rOut, cy + rOut)
+        val currentTimeAngle = (1 - currentTimeElapsed / currentTime) * 360
 
-        val innerOval = RectF(cx - rInn, cy - rInn, cx + rInn, cy + rInn)
+        currentTimePath.arcTo(currentTimeRect, 0F, currentTimeAngle, false)
 
-        val segmentPath = Path().also {
-            // https://stackoverflow.com/questions/3874424/android-looking-for-a-drawarc-method-with-inner-outer-radius
-            it.moveTo(
-                (cx + rInn * cos(0.0)).toFloat(),
-                (cy + rInn * sin(0.0)).toFloat()
-            )
+        canvas.drawPath(currentTimePath, currentTimePaint)
+    }
 
-            it.arcTo(outerOval, 0F, sweepAngle)
+    private fun drawArcForTotalTime(canvas: Canvas, rect: RectF) {
+        val totalTimeRect = RectF(rect)
 
-            it.arcTo(innerOval, sweepAngle, -sweepAngle, false)
+        val totalTimeWidth = (dialPaint.strokeWidth / 2) - (totalTimePaint.strokeWidth / 2)
 
-            it.close()
-        }
+        totalTimeRect.inset(-1 * totalTimeWidth, -1 * totalTimeWidth)
 
-        canvas.drawPath(segmentPath, fill)
+        val totalTimePath = Path()
+
+        val totalTimeAngle = (1 - totalTimeElapsed / totalTime) * 360
+
+        totalTimePath.arcTo(totalTimeRect, 0F, totalTimeAngle, false)
+
+        canvas.drawPath(totalTimePath, totalTimePaint)
     }
 }

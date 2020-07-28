@@ -30,11 +30,11 @@ class MainActivity : AppCompatActivity() {
 
         timerMyTimer = findViewById(R.id.timer_myTimer)
 
-        timerMyTimer?.currentTime = 100
-        timerMyTimer?.currentTimeElapsed = 50
+        timerMyTimer?.currentTime = 100F
+        timerMyTimer?.currentTimeElapsed = 50F
 
-        timerMyTimer?.totalTime = 200
-        timerMyTimer?.totalTimeElapsed = 50
+        timerMyTimer?.totalTime = 200F
+        timerMyTimer?.totalTimeElapsed = 50F
 
         val animator = MyTimerStartAnimator(timerMyTimer!!)
 

@@ -9,78 +9,50 @@ import android.util.AttributeSet
 import android.view.View
 import se.logikfabrik.hiit.R
 
-class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
+class MyTimer (context: Context, attrs: AttributeSet) : View(context, attrs) {
     var currentTime = 0F
         set(value) {
-            require(value >= currentTimeElapsed) { "Current time must be greater than or equal to current time elapsed." }
-            require(value >= 0) { "Current time must be greater than or equal to 0." }
+            field = value.coerceAtLeast(currentTimeElapsed)
 
-            if (field == value) {
-                return
-            }
-
-            field = value
-
-            invalidate()
+            postInvalidateOnAnimation()
         }
 
     var currentTimeElapsed = 0F
         set(value) {
-            require(value <= currentTime) { "Current time elapsed must be less than or equal to current time." }
-            require(value >= 0) { "Current time elapsed must be greater than or equal to 0." }
+            field = value.coerceIn(0F, currentTime)
 
-            if (field == value) {
-                return
-            }
-
-            field = value
-
-            invalidate()
+            postInvalidateOnAnimation()
         }
 
     var totalTime = 0F
         set(value) {
-            require(value >= totalTimeElapsed) { "Total time must be greater than or equal to total time elapsed." }
-            require(value >= 0) { "Total time must be greater than or equal to 0." }
+            field = value.coerceAtLeast(totalTimeElapsed)
 
-            if (field == value) {
-                return
-            }
-
-            field = value
-
-            invalidate()
+            postInvalidateOnAnimation()
         }
 
     var totalTimeElapsed = 0F
         set(value) {
-            require(value <= totalTime) { "Total time elapsed must be less than or equal to total time." }
-            require(value >= 0) { "Total time elapsed must be greater than or equal to 0." }
+            field = value.coerceIn(0F, totalTime)
 
-            if (field == value) {
-                return
-            }
-
-            field = value
-
-            invalidate()
+            postInvalidateOnAnimation()
         }
 
-    private val dialPaint = Paint().apply {
+    private val _dialPaint = Paint().apply {
         isAntiAlias = true
         color = resources.getColor(R.color.greyDark, null)
         style = Paint.Style.STROKE
         strokeWidth = 50F
     }
 
-    private val currentTimePaint = Paint().apply {
+    private val _currentTimePaint = Paint().apply {
         isAntiAlias = true
         color = resources.getColor(R.color.purpleDark, null)
         style = Paint.Style.STROKE
         strokeWidth = 40F
     }
 
-    private val totalTimePaint = Paint().apply {
+    private val _totalTimePaint = Paint().apply {
         isAntiAlias = true
         color = resources.getColor(R.color.orangeDark, null)
         style = Paint.Style.STROKE
@@ -90,18 +62,17 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
+        val r = minOf(width, height) / 2.toFloat()
         val cx = width / 2.toFloat()
         val cy = height / 2.toFloat()
 
         canvas.rotate(-90F, cx, cy)
 
-        val r = minOf(width, height) / 2.toFloat()
-
         val dialRect = RectF(cx - r, cy - r, cx + r, cy + r)
 
-        dialRect.inset(dialPaint.strokeWidth / 2, dialPaint.strokeWidth / 2)
+        dialRect.inset(_dialPaint.strokeWidth / 2, _dialPaint.strokeWidth / 2)
 
-        canvas.drawOval(dialRect, dialPaint)
+        canvas.drawOval(dialRect, _dialPaint)
 
         drawArcForTotalTime(canvas, dialRect)
 
@@ -111,7 +82,7 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private fun drawArcForCurrentTime(canvas: Canvas, rect: RectF) {
         val currentTimeRect = RectF(rect)
 
-        val currentTimeWidth = (dialPaint.strokeWidth / 2) - (currentTimePaint.strokeWidth / 2)
+        val currentTimeWidth = (_dialPaint.strokeWidth / 2) - (_currentTimePaint.strokeWidth / 2)
 
         currentTimeRect.inset(currentTimeWidth, currentTimeWidth)
 
@@ -121,13 +92,13 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         currentTimePath.arcTo(currentTimeRect, 0F, currentTimeAngle, false)
 
-        canvas.drawPath(currentTimePath, currentTimePaint)
+        canvas.drawPath(currentTimePath, _currentTimePaint)
     }
 
     private fun drawArcForTotalTime(canvas: Canvas, rect: RectF) {
         val totalTimeRect = RectF(rect)
 
-        val totalTimeWidth = (dialPaint.strokeWidth / 2) - (totalTimePaint.strokeWidth / 2)
+        val totalTimeWidth = (_dialPaint.strokeWidth / 2) - (_totalTimePaint.strokeWidth / 2)
 
         totalTimeRect.inset(-1 * totalTimeWidth, -1 * totalTimeWidth)
 
@@ -137,6 +108,6 @@ class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         totalTimePath.arcTo(totalTimeRect, 0F, totalTimeAngle, false)
 
-        canvas.drawPath(totalTimePath, totalTimePaint)
+        canvas.drawPath(totalTimePath, _totalTimePaint)
     }
 }

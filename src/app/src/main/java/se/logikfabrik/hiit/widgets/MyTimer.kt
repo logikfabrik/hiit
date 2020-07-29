@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import se.logikfabrik.hiit.R
 
-class MyTimer (context: Context, attrs: AttributeSet) : View(context, attrs) {
+class MyTimer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     var currentTime = 0F
         set(value) {
             field = value.coerceAtLeast(currentTimeElapsed)

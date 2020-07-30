@@ -7,14 +7,14 @@ import android.os.Handler
 import android.util.Log
 import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
+import se.logikfabrik.hiit.widgets.Dial
 import se.logikfabrik.hiit.widgets.Element
 import se.logikfabrik.hiit.widgets.MyTimePicker
-import se.logikfabrik.hiit.widgets.MyTimer
 import se.logikfabrik.hiit.widgets.MyTimerStartAnimator
 
 class MainActivity : AppCompatActivity() {
 
-    private var timerMyTimer: MyTimer? = null
+    private var timerMyTimer: Dial? = null
 
     private var workMyTimePicker: MyTimePicker? = null
     private var restMyTimePicker: MyTimePicker? = null
@@ -30,11 +30,11 @@ class MainActivity : AppCompatActivity() {
 
         timerMyTimer = findViewById(R.id.timer_myTimer)
 
-        timerMyTimer?.currentTime = 100F
-        timerMyTimer?.currentTimeElapsed = 50F
+        timerMyTimer?.currentTime = 100
+        timerMyTimer?.currentTimeElapsed = 50
 
-        timerMyTimer?.totalTime = 200F
-        timerMyTimer?.totalTimeElapsed = 50F
+        timerMyTimer?.totalTime = 200
+        timerMyTimer?.totalTimeElapsed = 50
 
         val animator = MyTimerStartAnimator(timerMyTimer!!)
 

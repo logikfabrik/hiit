@@ -1,15 +1,13 @@
 package se.logikfabrik.hiit.widgets
 
-import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
-import android.content.res.Resources
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
 class MyTimerStartAnimator {
 
     private val _animator: ValueAnimator = ValueAnimator()
 
-    constructor(timer: MyTimer) {
+    constructor(timer: Dial) {
+        /*
         val currentTimeHolder = PropertyValuesHolder.ofFloat(
             "CURRENT_TIME_ELAPSED",
             timer.currentTime,
@@ -31,9 +29,11 @@ class MyTimerStartAnimator {
             timer.currentTimeElapsed = animator.getAnimatedValue("CURRENT_TIME_ELAPSED") as Float
             timer.totalTimeElapsed = animator.getAnimatedValue("TOTAL_TIME_ELAPSED") as Float
         }
+
+         */
     }
 
     fun start() {
-        _animator.start()
+        // _animator.start()
     }
 }

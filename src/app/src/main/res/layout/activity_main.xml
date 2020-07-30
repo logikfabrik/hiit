@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp">
 
-                <se.logikfabrik.hiit.widgets.MyTimer
+                <se.logikfabrik.hiit.widgets.Dial
                     android:id="@+id/timer_myTimer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

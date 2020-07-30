@@ -6,14 +6,17 @@ import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.RelativeLayout
 
-class Emitter(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
+class Emitter(context: Context) : RelativeLayout(context) {
 
     private class Pulse(context: Context) : View(context) {
+
+        private var r = 0F
+        private var cx = 0F
+        private var cy = 0F
 
         init {
             alpha = 0F
@@ -24,14 +27,20 @@ class Emitter(context: Context, attrs: AttributeSet) : RelativeLayout(context, a
                 isAntiAlias = true
                 color = 0xFF333333.toInt()
                 style = Paint.Style.STROKE
-                strokeWidth = 5F
+                strokeWidth = 6F
             }
         }
 
-        override fun onDraw(canvas: Canvas) {
-            val r = minOf(width, height) / 2.toFloat()
+        override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+            super.onSizeChanged(w, h, oldw, oldh)
 
-            canvas.drawCircle(width / 2.toFloat(), height / 2.toFloat(), r, paint)
+            r = (minOf(w, h) - paint.strokeWidth) / 2.toFloat()
+            cx = w / 2.toFloat()
+            cy = h / 2.toFloat()
+        }
+
+        override fun onDraw(canvas: Canvas) {
+            canvas.drawCircle(cx, cy, r, paint)
         }
     }
 
@@ -52,7 +61,9 @@ class Emitter(context: Context, attrs: AttributeSet) : RelativeLayout(context, a
         }
 
         // Add the views (pulses) to the layout
-        animatorSet.childAnimations.forEach { animator -> addView((animator as ObjectAnimator).target as View) }
+        animatorSet.childAnimations.forEach { animator ->
+            addView((animator as ObjectAnimator).target as View)
+        }
     }
 
     private fun createAnimator(pulse: Pulse): ObjectAnimator {

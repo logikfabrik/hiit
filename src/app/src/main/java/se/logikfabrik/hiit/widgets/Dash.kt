@@ -19,5 +19,20 @@ class Dash(context: Context, attrs: AttributeSet) : RelativeLayout(context, attr
                 currentTimeElapsed = 15
             }
         )
+        addView(
+            Timer(context).apply {
+                currentTime = 100
+                currentTimeElapsed = 15
+
+                numberOfSets = 3
+                numberOfSetsElapsed = 2
+            },
+            LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
+            ).apply {
+                addRule(CENTER_IN_PARENT, TRUE)
+            }
+        )
     }
 }

@@ -25,7 +25,7 @@ class Emitter(context: Context) : RelativeLayout(context) {
         companion object {
             private val paint = Paint().apply {
                 isAntiAlias = true
-                color = 0xFF333333.toInt()
+                color = 0XFF711C9B.toInt()
                 style = Paint.Style.STROKE
                 strokeWidth = 6F
             }
@@ -34,9 +34,9 @@ class Emitter(context: Context) : RelativeLayout(context) {
         override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
             super.onSizeChanged(w, h, oldw, oldh)
 
-            r = (minOf(w, h) - paint.strokeWidth) / 2.toFloat()
-            cx = w / 2.toFloat()
-            cy = h / 2.toFloat()
+            r = (minOf(w, h) - paint.strokeWidth) / 2.2F
+            cx = w / 2F
+            cy = h / 2F
         }
 
         override fun onDraw(canvas: Canvas) {

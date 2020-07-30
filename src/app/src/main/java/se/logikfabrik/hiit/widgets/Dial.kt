@@ -46,33 +46,33 @@ class Dial(context: Context) : View(context) {
     companion object {
         private val dialPaint = Paint().apply {
             isAntiAlias = true
-            color = 0XFF333333.toInt()
+            color = 0XFF711C9B.toInt()
             style = Paint.Style.STROKE
-            strokeWidth = 50F
+            strokeWidth = 70F
         }
 
         private val totalTimePaint = Paint().apply {
             isAntiAlias = true
             color = 0XFFFF610f.toInt()
             style = Paint.Style.STROKE
-            strokeWidth = 10F
+            strokeWidth = 20F
         }
 
         private val currentTimePaint = Paint().apply {
             isAntiAlias = true
-            color = 0XFF711C9B.toInt()
+            color = 0XFF333333.toInt()
             style = Paint.Style.STROKE
-            strokeWidth = 40F
+            strokeWidth = 50F
         }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-        cx = w / 2.toFloat()
-        cy = h / 2.toFloat()
+        cx = w / 2F
+        cy = h / 2F
 
-        val r = minOf(w, h) / 2.toFloat()
+        val r = minOf(w, h) / 2.2F
 
         val baseRect = RectF(
             cx - r,

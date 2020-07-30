@@ -2,12 +2,11 @@ package se.logikfabrik.hiit.widgets
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.drawable.ShapeDrawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.RelativeLayout
@@ -39,47 +38,33 @@ class Emitter(context: Context, attrs: AttributeSet) : RelativeLayout(context, a
     private val animatorSet: AnimatorSet
 
     init {
-        background = ShapeDrawable(android.graphics.drawable.shapes.RectShape())
-
+        // Create the pulses and set up their animations
         animatorSet = AnimatorSet().apply {
             interpolator = DecelerateInterpolator()
 
             playTogether(
                 (0..4).map {
-                    val pulse = Pulse(context)
-
-                    Log.i(null, it.toString())
-
-                    addView(pulse)
-
-                    createAnimator(pulse).apply {
+                    createAnimator(Pulse(context)).apply {
                         startDelay = it * 1000L
                     }
                 }
             )
         }
+
+        // Add the views (pulses) to the layout
+        animatorSet.childAnimations.forEach { animator -> addView((animator as ObjectAnimator).target as View) }
     }
 
-    private fun createAnimator(pulse: Pulse): AnimatorSet {
-        return AnimatorSet().apply {
+    private fun createAnimator(pulse: Pulse): ObjectAnimator {
+        return ObjectAnimator.ofPropertyValuesHolder(
+            pulse,
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 2F),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 2F),
+            PropertyValuesHolder.ofFloat(View.ALPHA, 1F, 0F)
+        ).apply {
             duration = 5000
-
-            playTogether(
-                listOf(
-                    ObjectAnimator.ofFloat(pulse, View.SCALE_X, 1F, 1.5F).apply {
-                        repeatMode = ObjectAnimator.RESTART
-                        repeatCount = ObjectAnimator.INFINITE
-                    },
-                    ObjectAnimator.ofFloat(pulse, View.SCALE_Y, 1F, 1.5F).apply {
-                        repeatMode = ObjectAnimator.RESTART
-                        repeatCount = ObjectAnimator.INFINITE
-                    },
-                    ObjectAnimator.ofFloat(pulse, View.ALPHA, 1F, 0F).apply {
-                        repeatMode = ObjectAnimator.RESTART
-                        repeatCount = ObjectAnimator.INFINITE
-                    }
-                )
-            )
+            repeatMode = ObjectAnimator.RESTART
+            repeatCount = ObjectAnimator.INFINITE
         }
     }
 

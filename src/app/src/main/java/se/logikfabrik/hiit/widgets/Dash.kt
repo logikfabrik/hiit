@@ -1,32 +1,50 @@
 package se.logikfabrik.hiit.widgets
 
 import android.content.Context
-import android.util.AttributeSet
 import android.widget.RelativeLayout
 
-class Dash(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
+class Dash(context: Context) : RelativeLayout(context) {
+    fun setTotalTime(totalTime: Int) {
+        dial.totalTime = totalTime
+    }
+
+    fun setTotalTimeElapsed(totalTimeElapsed: Int) {
+        dial.totalTimeElapsed = totalTimeElapsed
+    }
+
+    fun setCurrentTime(currentTime: Int) {
+        dial.currentTime = currentTime
+        timer.currentTime = currentTime
+    }
+
+    fun setCurrentTimeElapsed(currentTimeElapsed: Int) {
+        dial.currentTimeElapsed = currentTimeElapsed
+        timer.currentTimeElapsed = currentTimeElapsed
+    }
+
+    fun setNumberOfSets(numberOfSets: Int) {
+        timer.numberOfSets = numberOfSets
+    }
+
+    fun setNumberOfSetsElapsed(numberOfSetsElapsed: Int) {
+        timer.numberOfSetsElapsed = numberOfSetsElapsed
+    }
+
+    private val emitter: Emitter
+    private val dial: Dial
+    private val timer: Timer
 
     init {
         setBackgroundColor(0xFF8D23C1.toInt())
 
-        addView(Emitter(context))
-        addView(
-            Dial(context).apply {
-                totalTime = 100
-                totalTimeElapsed = 65
+        emitter = Emitter(context)
+        dial = Dial(context)
+        timer = Timer(context)
 
-                currentTime = 100
-                currentTimeElapsed = 15
-            }
-        )
+        addView(emitter)
+        addView(dial)
         addView(
-            Timer(context).apply {
-                currentTime = 100
-                currentTimeElapsed = 15
-
-                numberOfSets = 3
-                numberOfSetsElapsed = 2
-            },
+            timer,
             LayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT
@@ -34,5 +52,13 @@ class Dash(context: Context, attrs: AttributeSet) : RelativeLayout(context, attr
                 addRule(CENTER_IN_PARENT, TRUE)
             }
         )
+
+        // TODO: Set from parent
+        setTotalTime(100)
+        setTotalTimeElapsed(65)
+        setCurrentTime(100)
+        setCurrentTimeElapsed(15)
+        setNumberOfSets(3)
+        setNumberOfSetsElapsed(2)
     }
 }

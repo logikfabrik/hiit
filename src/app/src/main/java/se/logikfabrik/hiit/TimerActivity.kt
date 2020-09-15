@@ -1,8 +1,6 @@
 package se.logikfabrik.hiit
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import se.logikfabrik.hiit.widgets.Dash
@@ -21,6 +19,6 @@ class TimerActivity : AppCompatActivity() {
             }
         )
 
-            dash?.start(10, 5, 3)
+        dash?.start(10, 5, 3)
     }
 }

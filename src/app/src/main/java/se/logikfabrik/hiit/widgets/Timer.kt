@@ -1,7 +1,6 @@
 package se.logikfabrik.hiit.widgets
 
 import android.content.Context
-import android.util.Log
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextSwitcher
@@ -70,9 +69,6 @@ class Timer(context: Context) : LinearLayout(context) {
     }
 
     private fun updateNumberOfSets() {
-        Log.i(null, "Timer numberOfSets: $numberOfSets")
-        Log.i(null, "Timer numberOfSetsElapsed: $numberOfSetsElapsed")
-
         val numberOfSetsElapsed = this.numberOfSetsElapsed + 1
 
         numberOfSetsTextSwitcher.setText("$numberOfSetsElapsed/$numberOfSets")

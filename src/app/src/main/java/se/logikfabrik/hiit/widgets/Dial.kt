@@ -10,28 +10,28 @@ import android.view.View
 class Dial(context: Context) : View(context) {
     var totalTime = 0
         set(value) {
-            field = value.coerceAtLeast(totalTimeElapsed)
+            field = value.coerceAtLeast(0)
 
             postInvalidateOnAnimation()
         }
 
     var totalTimeElapsed = 0
         set(value) {
-            field = value.coerceIn(0, totalTime)
+            field = value.coerceAtLeast(0)
 
             postInvalidateOnAnimation()
         }
 
     var currentTime = 0
         set(value) {
-            field = value.coerceAtLeast(currentTimeElapsed)
+            field = value.coerceAtLeast(0)
 
             postInvalidateOnAnimation()
         }
 
     var currentTimeElapsed = 0
         set(value) {
-            field = value.coerceIn(0, currentTime)
+            field = value.coerceAtLeast(0)
 
             postInvalidateOnAnimation()
         }

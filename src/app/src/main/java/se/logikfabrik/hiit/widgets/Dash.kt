@@ -2,7 +2,6 @@ package se.logikfabrik.hiit.widgets
 
 import android.content.Context
 import android.os.CountDownTimer
-import android.util.Log
 import android.widget.RelativeLayout
 
 class Dash(context: Context) : RelativeLayout(context) {
@@ -21,24 +20,11 @@ class Dash(context: Context) : RelativeLayout(context) {
         // Only rest between work, and not at the very end
         totalTime = ((this.workTime + this.restTime) * this.numberOfSets) - this.restTime
 
-        timer.currentTime = this.workTime
-        timer.currentTimeElapsed = 0
-
-        timer.numberOfSets = this.numberOfSets
-        timer.numberOfSetsElapsed = 0
-
-        // Reset (cancel)
-        countDownTimer?.cancel()
+        reset()
 
         countDownTimer = object : CountDownTimer(totalTime * 1000L, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val totalTimeElapsed = totalTime - (millisUntilFinished / 1000).toInt()
-
-                dial.totalTime = totalTime
-                dial.totalTimeElapsed = totalTimeElapsed
-
-                Log.i(null, "Total time: $totalTime")
-                Log.i(null, "Total time elapsed: $totalTimeElapsed")
 
                 var numberOfSetsElapsed =
                     totalTimeElapsed / (this@Dash.workTime + this@Dash.restTime)
@@ -47,9 +33,6 @@ class Dash(context: Context) : RelativeLayout(context) {
                     numberOfSetsElapsed--
                 }
 
-                Log.i(null, "Number of sets: $(this@Dash.numberOfSets)")
-                Log.i(null, "Number of sets elapsed: $numberOfSetsElapsed")
-
                 var currentTimeElapsed =
                     totalTimeElapsed - (numberOfSetsElapsed * (this@Dash.workTime + this@Dash.restTime))
 
@@ -57,23 +40,20 @@ class Dash(context: Context) : RelativeLayout(context) {
 
                 if (currentTimeElapsed <= this@Dash.workTime) {
                     currentTime = this@Dash.workTime
-
                 } else {
                     currentTime = this@Dash.restTime
                     currentTimeElapsed = (currentTimeElapsed - this@Dash.workTime)
                 }
 
-                Log.i(null, "Current time: $currentTime")
-                Log.i(null, "Current time elapsed: $currentTimeElapsed")
+                dial.totalTime = totalTime
+                dial.totalTimeElapsed = totalTimeElapsed
 
-
-
-                Log.i(null, "--------------------")
+                dial.currentTime = currentTime
+                dial.currentTimeElapsed = currentTimeElapsed
 
                 timer.currentTime = currentTime
                 timer.currentTimeElapsed = currentTimeElapsed
 
-                //timer.numberOfSets = this@Dash.numberOfSets
                 timer.numberOfSetsElapsed = numberOfSetsElapsed
 
                 emitter.emit()
@@ -95,6 +75,23 @@ class Dash(context: Context) : RelativeLayout(context) {
     private val timer: Timer
 
     private var countDownTimer: CountDownTimer? = null
+
+    private fun reset() {
+        dial.totalTime = 0
+        dial.totalTimeElapsed = 0;
+
+        dial.currentTime = 0
+        dial.currentTimeElapsed = 0
+
+        timer.currentTime = this.workTime
+        timer.currentTimeElapsed = 0
+
+        timer.numberOfSets = this.numberOfSets
+        timer.numberOfSetsElapsed = 0
+
+        // Reset (cancel)
+        countDownTimer?.cancel()
+    }
 
     init {
         setBackgroundColor(0xFF8D23C1.toInt())

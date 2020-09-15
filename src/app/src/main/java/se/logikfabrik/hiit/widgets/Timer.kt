@@ -8,8 +8,16 @@ import android.widget.TextView
 
 class Timer(context: Context) : LinearLayout(context) {
 
-    private val currentTimeSwitcher: TextSwitcher
+    private val textTextSwitcher: TextSwitcher
+    private val currentTimeTextSwitcher: TextSwitcher
     private val numberOfSetsTextSwitcher: TextSwitcher
+
+    var text = ""
+        set(value) {
+            field = value
+
+            updateText()
+        }
 
     var currentTime = 0
         set(value) {
@@ -48,7 +56,11 @@ class Timer(context: Context) : LinearLayout(context) {
             }
         }
 
-        currentTimeSwitcher = TextSwitcher(context).apply {
+        textTextSwitcher = TextSwitcher(context).apply {
+            setFactory(factory)
+        }
+
+        currentTimeTextSwitcher = TextSwitcher(context).apply {
             setFactory(factory)
         }
 
@@ -56,8 +68,13 @@ class Timer(context: Context) : LinearLayout(context) {
             setFactory(factory)
         }
 
-        addView(currentTimeSwitcher)
+        addView(textTextSwitcher)
+        addView(currentTimeTextSwitcher)
         addView(numberOfSetsTextSwitcher)
+    }
+
+    private fun updateText() {
+        textTextSwitcher.setText(text)
     }
 
     private fun updateCurrentTime() {
@@ -65,7 +82,7 @@ class Timer(context: Context) : LinearLayout(context) {
         val minutes = time / 60
         val seconds = time % 60
 
-        currentTimeSwitcher.setText("%02d:%02d".format(minutes, seconds))
+        currentTimeTextSwitcher.setText("%02d:%02d".format(minutes, seconds))
     }
 
     private fun updateNumberOfSets() {

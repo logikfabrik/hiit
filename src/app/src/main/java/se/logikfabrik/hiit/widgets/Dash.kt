@@ -37,10 +37,13 @@ class Dash(context: Context) : RelativeLayout(context) {
                     totalTimeElapsed - (numberOfSetsElapsed * (this@Dash.workTime + this@Dash.restTime))
 
                 val currentTime: Int
+                val text: String
 
                 if (currentTimeElapsed <= this@Dash.workTime) {
+                    text = "Work"
                     currentTime = this@Dash.workTime
                 } else {
+                    text = "Rest"
                     currentTime = this@Dash.restTime
                     currentTimeElapsed = (currentTimeElapsed - this@Dash.workTime)
                 }
@@ -50,6 +53,8 @@ class Dash(context: Context) : RelativeLayout(context) {
 
                 dial.currentTime = currentTime
                 dial.currentTimeElapsed = currentTimeElapsed
+
+                timer.text = text
 
                 timer.currentTime = currentTime
                 timer.currentTimeElapsed = currentTimeElapsed
@@ -78,7 +83,7 @@ class Dash(context: Context) : RelativeLayout(context) {
 
     private fun reset() {
         dial.totalTime = 0
-        dial.totalTimeElapsed = 0;
+        dial.totalTimeElapsed = 0
 
         dial.currentTime = 0
         dial.currentTimeElapsed = 0

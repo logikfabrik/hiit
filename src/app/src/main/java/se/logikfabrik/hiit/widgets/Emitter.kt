@@ -1,6 +1,5 @@
 package se.logikfabrik.hiit.widgets
 
-import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.Context
@@ -9,6 +8,7 @@ import android.graphics.Paint
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.RelativeLayout
+import java.util.LinkedList
 
 class Emitter(context: Context) : RelativeLayout(context) {
 
@@ -44,26 +44,18 @@ class Emitter(context: Context) : RelativeLayout(context) {
         }
     }
 
-    private val animatorSet: AnimatorSet
+    private val animators: LinkedList<ObjectAnimator>
 
     init {
-        // Create the pulses and set up their animations
-        animatorSet = AnimatorSet().apply {
-            interpolator = DecelerateInterpolator()
-
-            playTogether(
-                (0..4).map {
-                    createAnimator(Pulse(context)).apply {
-                        startDelay = it * 1000L
-                    }
-                }
-            )
+        val pulses = (0..4).map {
+            Pulse(context)
         }
 
-        // Add the views (pulses) to the layout
-        animatorSet.childAnimations.forEach { animator ->
-            addView((animator as ObjectAnimator).target as View)
+        pulses.forEach { pulse ->
+            addView(pulse)
         }
+
+        animators = LinkedList(pulses.map { pulse -> createAnimator(pulse) })
     }
 
     private fun createAnimator(pulse: Pulse): ObjectAnimator {
@@ -74,20 +66,21 @@ class Emitter(context: Context) : RelativeLayout(context) {
             PropertyValuesHolder.ofFloat(View.ALPHA, 1F, 0F)
         ).apply {
             duration = 5000
-            repeatMode = ObjectAnimator.RESTART
-            repeatCount = ObjectAnimator.INFINITE
+            interpolator = DecelerateInterpolator()
         }
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        animatorSet.start()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        animatorSet.cancel()
+        animators.forEach { animator -> animator.cancel() }
+    }
+
+    fun emit() {
+        val animator = animators.poll()
+
+        animator.start()
+
+        animators.add(animator)
     }
 }

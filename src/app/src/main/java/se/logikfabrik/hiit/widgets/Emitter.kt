@@ -77,7 +77,7 @@ class Emitter(context: Context) : RelativeLayout(context) {
     }
 
     fun emit() {
-        val animator = animators.poll()
+        val animator = animators.poll() ?: return
 
         animator.start()
 

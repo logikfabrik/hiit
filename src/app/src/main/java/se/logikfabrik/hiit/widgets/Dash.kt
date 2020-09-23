@@ -2,6 +2,8 @@ package se.logikfabrik.hiit.widgets
 
 import android.content.Context
 import android.os.CountDownTimer
+import android.os.Parcel
+import android.os.Parcelable
 import android.widget.RelativeLayout
 
 class Dash(context: Context) : RelativeLayout(context) {
@@ -10,6 +12,7 @@ class Dash(context: Context) : RelativeLayout(context) {
     private var restTime = 0
     private var numberOfSets = 0
     private var totalTime = 0
+    private var totalTimeElapsed = 0
 
     fun start(workTime: Int, restTime: Int, numberOfSets: Int) {
 
@@ -20,11 +23,35 @@ class Dash(context: Context) : RelativeLayout(context) {
         // Only rest between work, and not at the very end
         totalTime = ((this.workTime + this.restTime) * this.numberOfSets) - this.restTime
 
-        reset()
+        val stopped = totalTime == totalTimeElapsed
 
-        countDownTimer = object : CountDownTimer(totalTime * 1000L, 1000) {
+        dial.totalTime = 0
+        dial.totalTimeElapsed = 0
+
+        dial.currentTime = 0
+        dial.currentTimeElapsed = 0
+
+        timer.currentTime = if (!stopped) {
+            this.workTime
+        } else {
+            0
+        }
+        timer.currentTimeElapsed = 0
+
+        timer.numberOfSets = this.numberOfSets
+        timer.numberOfSetsElapsed = if (stopped) {
+            this.numberOfSets - 1
+        } else {
+            0
+        }
+
+        if (stopped) {
+            return
+        }
+
+        countDownTimer = object : CountDownTimer((totalTime - totalTimeElapsed) * 1000L, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                val totalTimeElapsed = totalTime - (millisUntilFinished / 1000).toInt()
+                totalTimeElapsed = totalTime - (millisUntilFinished / 1000).toInt()
 
                 var numberOfSetsElapsed =
                     totalTimeElapsed / (this@Dash.workTime + this@Dash.restTime)
@@ -69,8 +96,16 @@ class Dash(context: Context) : RelativeLayout(context) {
         }.start()
     }
 
+    fun resume() {
+        countDownTimer?.cancel()
+
+        start(workTime, restTime, numberOfSets)
+    }
+
     fun stop() {
         countDownTimer?.cancel()
+
+        totalTimeElapsed = 0
     }
 
     private val emitter: Emitter
@@ -80,23 +115,6 @@ class Dash(context: Context) : RelativeLayout(context) {
     private val timer: Timer
 
     private var countDownTimer: CountDownTimer? = null
-
-    private fun reset() {
-        dial.totalTime = 0
-        dial.totalTimeElapsed = 0
-
-        dial.currentTime = 0
-        dial.currentTimeElapsed = 0
-
-        timer.currentTime = this.workTime
-        timer.currentTimeElapsed = 0
-
-        timer.numberOfSets = this.numberOfSets
-        timer.numberOfSetsElapsed = 0
-
-        // Reset (cancel)
-        countDownTimer?.cancel()
-    }
 
     init {
         setBackgroundColor(0xFF8D23C1.toInt())
@@ -122,5 +140,69 @@ class Dash(context: Context) : RelativeLayout(context) {
         super.onDetachedFromWindow()
 
         countDownTimer?.cancel()
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        val superState = super.onSaveInstanceState() ?: return null
+
+        val savedState = SavedState(superState)
+
+        savedState.workTime = workTime
+        savedState.restTime = restTime
+        savedState.numberOfSets = numberOfSets
+        savedState.totalTimeElapsed = totalTimeElapsed
+
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        val savedState = state as SavedState
+
+        super.onRestoreInstanceState(savedState.superState)
+
+        workTime = savedState.workTime
+        restTime = savedState.restTime
+        numberOfSets = savedState.numberOfSets
+        totalTimeElapsed = savedState.totalTimeElapsed
+
+        resume()
+    }
+
+    internal class SavedState : BaseSavedState {
+        var workTime = 0
+        var restTime = 0
+        var numberOfSets = 0
+        var totalTimeElapsed = 0
+
+        constructor(source: Parcel) : super(source) {
+            workTime = source.readInt()
+            restTime = source.readInt()
+            numberOfSets = source.readInt()
+            totalTimeElapsed = source.readInt()
+        }
+
+        constructor(superState: Parcelable) : super(superState)
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+
+            out.writeInt(workTime)
+            out.writeInt(restTime)
+            out.writeInt(numberOfSets)
+            out.writeInt(totalTimeElapsed)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR = object : Parcelable.Creator<SavedState> {
+                override fun createFromParcel(source: Parcel): SavedState {
+                    return SavedState(source)
+                }
+
+                override fun newArray(size: Int): Array<SavedState?> {
+                    return arrayOfNulls(size)
+                }
+            }
+        }
     }
 }

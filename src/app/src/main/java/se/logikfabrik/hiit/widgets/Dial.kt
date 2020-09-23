@@ -85,6 +85,7 @@ class Dial(context: Context) : View(context) {
         currentTimeAnimator.addUpdateListener { animation ->
             currentTimeElapsedValue = animation.animatedValue as Float
 
+            // TODO: Save this state
             if (currentTimeElapsedValue == currentTime.toFloat()) {
                 currentTimeAngleIsGrowing = !currentTimeAngleIsGrowing
             }

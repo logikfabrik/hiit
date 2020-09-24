@@ -92,6 +92,7 @@ class Dash(context: Context) : RelativeLayout(context) {
             }
 
             override fun onFinish() {
+                timer.text = "Done"
             }
         }.start()
     }

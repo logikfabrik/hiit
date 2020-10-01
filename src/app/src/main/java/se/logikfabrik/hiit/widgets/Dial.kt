@@ -10,6 +10,7 @@ import android.graphics.RectF
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 
 class Dial(context: Context) : View(context) {
@@ -67,11 +68,12 @@ class Dial(context: Context) : View(context) {
     private val totalTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
         repeatCount = 0
         duration = 1000
-        this.interpolator = LinearInterpolator()
+        interpolator = LinearInterpolator()
     }
     private val currentTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
         repeatCount = 0
         duration = 500
+        interpolator = DecelerateInterpolator()
     }
 
     private var totalTimeElapsedValue = 0F
@@ -83,6 +85,10 @@ class Dial(context: Context) : View(context) {
     init {
         totalTimeAnimator.addUpdateListener { animation ->
             totalTimeElapsedValue = animation.animatedValue as Float
+
+            if (totalTimeElapsedValue == totalTime.toFloat()) {
+                totalTimeAngleIsGrowing = !totalTimeAngleIsGrowing
+            }
 
             postInvalidateOnAnimation()
         }
@@ -197,11 +203,21 @@ class Dial(context: Context) : View(context) {
     ) {
         val startAngle = 0F
 
-        canvas.drawPath(Path().apply { arcTo(rect, startAngle, angle, false) }, paint)
+        if (angle == 360F) {
+            canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2, paint)
+        } else {
+            canvas.drawPath(Path().apply { arcTo(rect, startAngle, angle, false) }, paint)
+        }
     }
 
     private fun getAngle(timeElapsed: Float, time: Int, grow: Boolean): Float {
-        return ((if (grow) 0 else 1) - timeElapsed / time.toFloat()) * 360
+        val angle = ((if (grow) 0 else 1) - timeElapsed / time.toFloat()) * 360
+
+        if (!grow && angle == 0F) {
+            return 360F
+        }
+
+        return angle
     }
 
     override fun onSaveInstanceState(): Parcelable? {

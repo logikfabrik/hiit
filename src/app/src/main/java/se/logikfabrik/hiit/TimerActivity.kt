@@ -23,7 +23,7 @@ class TimerActivity : AppCompatActivity() {
             }
         )
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             dash?.start(10, 5, 3)
         }
     }

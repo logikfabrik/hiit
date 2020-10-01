@@ -10,6 +10,7 @@ import android.graphics.RectF
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.View
+import android.view.animation.LinearInterpolator
 
 class Dial(context: Context) : View(context) {
     var totalTime = 0
@@ -66,10 +67,11 @@ class Dial(context: Context) : View(context) {
     private val totalTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
         repeatCount = 0
         duration = 1000
+        this.interpolator = LinearInterpolator()
     }
     private val currentTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
         repeatCount = 0
-        duration = 1000
+        duration = 500
     }
 
     private var totalTimeElapsedValue = 0F

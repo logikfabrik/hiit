@@ -1,14 +1,11 @@
 package se.logikfabrik.hiit.widgets
 
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
-import android.os.Parcel
-import android.os.Parcelable
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
@@ -36,6 +33,13 @@ class Dial(context: Context) : View(context) {
             field = v
         }
 
+    var totalTimeAngleDirection = Direction.NARROWING
+        set(value) {
+            field = value
+
+            postInvalidateOnAnimation()
+        }
+
     var currentTime = 0
         set(value) {
             field = value.coerceAtLeast(0)
@@ -58,6 +62,13 @@ class Dial(context: Context) : View(context) {
             field = v
         }
 
+    var currentTimeAngleDirection = Direction.WIDENING
+        set(value) {
+            field = value
+
+            postInvalidateOnAnimation()
+        }
+
     private var cx = 0F
     private var cy = 0F
 
@@ -72,33 +83,22 @@ class Dial(context: Context) : View(context) {
     }
     private val currentTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
         repeatCount = 0
-        duration = 500
+        duration = 1000
         interpolator = DecelerateInterpolator()
     }
 
     private var totalTimeElapsedValue = 0F
     private var currentTimeElapsedValue = 0F
 
-    private var totalTimeAngleIsGrowing = false
-    private var currentTimeAngleIsGrowing = false
-
     init {
         totalTimeAnimator.addUpdateListener { animation ->
             totalTimeElapsedValue = animation.animatedValue as Float
-
-            if (totalTimeElapsedValue == totalTime.toFloat()) {
-                totalTimeAngleIsGrowing = !totalTimeAngleIsGrowing
-            }
 
             postInvalidateOnAnimation()
         }
 
         currentTimeAnimator.addUpdateListener { animation ->
             currentTimeElapsedValue = animation.animatedValue as Float
-
-            if (currentTimeElapsedValue == currentTime.toFloat()) {
-                currentTimeAngleIsGrowing = !currentTimeAngleIsGrowing
-            }
 
             postInvalidateOnAnimation()
         }
@@ -177,14 +177,14 @@ class Dial(context: Context) : View(context) {
         drawTimeArc(
             canvas,
             totalTimeRect,
-            getAngle(totalTimeElapsedValue, totalTime, totalTimeAngleIsGrowing),
+            getAngle(totalTimeElapsedValue, totalTime, totalTimeAngleDirection),
             totalTimePaint
         )
 
         drawTimeArc(
             canvas,
             currentTimeRect,
-            getAngle(currentTimeElapsedValue, currentTime, currentTimeAngleIsGrowing),
+            getAngle(currentTimeElapsedValue, currentTime, currentTimeAngleDirection),
             currentTimePaint
         )
 
@@ -210,66 +210,14 @@ class Dial(context: Context) : View(context) {
         }
     }
 
-    private fun getAngle(timeElapsed: Float, time: Int, grow: Boolean): Float {
-        val angle = ((if (grow) 0 else 1) - timeElapsed / time.toFloat()) * 360
+    private fun getAngle(timeElapsed: Float, time: Int, direction: Direction): Float {
+        val angle =
+            ((if (direction != Direction.NARROWING) 0 else 1) - timeElapsed / time.toFloat()) * 360
 
-        if (!grow && angle == 0F) {
+        if (direction != Direction.WIDENING && angle == 0F) {
             return 360F
         }
 
         return angle
-    }
-
-    override fun onSaveInstanceState(): Parcelable? {
-        val superState = super.onSaveInstanceState() ?: return null
-
-        val savedState = SavedState(superState)
-
-        savedState.totalTimeAngleIsGrowing = totalTimeAngleIsGrowing
-        savedState.currentTimeAngleIsGrowing = currentTimeAngleIsGrowing
-
-        return savedState
-    }
-
-    override fun onRestoreInstanceState(state: Parcelable?) {
-        val savedState = state as SavedState
-
-        super.onRestoreInstanceState(savedState.superState)
-
-        totalTimeAngleIsGrowing = savedState.totalTimeAngleIsGrowing
-        currentTimeAngleIsGrowing = savedState.currentTimeAngleIsGrowing
-    }
-
-    internal class SavedState : BaseSavedState {
-        var totalTimeAngleIsGrowing = false
-        var currentTimeAngleIsGrowing = false
-
-        @SuppressLint("ParcelClassLoader")
-        constructor(source: Parcel) : super(source) {
-            totalTimeAngleIsGrowing = source.readValue(null) as Boolean
-            currentTimeAngleIsGrowing = source.readValue(null) as Boolean
-        }
-
-        constructor(superState: Parcelable) : super(superState)
-
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-
-            out.writeValue(totalTimeAngleIsGrowing)
-            out.writeValue(currentTimeAngleIsGrowing)
-        }
-
-        companion object {
-            @JvmField
-            val CREATOR = object : Parcelable.Creator<SavedState> {
-                override fun createFromParcel(source: Parcel): SavedState {
-                    return SavedState(source)
-                }
-
-                override fun newArray(size: Int): Array<SavedState?> {
-                    return arrayOfNulls(size)
-                }
-            }
-        }
     }
 }

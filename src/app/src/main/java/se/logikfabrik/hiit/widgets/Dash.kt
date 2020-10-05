@@ -13,6 +13,7 @@ class Dash(context: Context) : RelativeLayout(context) {
     private var numberOfSets = 0
     private var totalTime = 0
     private var totalTimeElapsed = 0
+    private var currentTimeAngleDirection = Direction.WIDENING
 
     fun start(workTime: Int, restTime: Int, numberOfSets: Int) {
 
@@ -77,9 +78,16 @@ class Dash(context: Context) : RelativeLayout(context) {
 
                 dial.totalTime = totalTime
                 dial.totalTimeElapsed = totalTimeElapsed
+                dial.totalTimeAngleDirection = Direction.NARROWING
+
+                if (currentTimeElapsed == 1) {
+                    currentTimeAngleDirection =
+                        if (currentTimeAngleDirection == Direction.NARROWING) Direction.WIDENING else Direction.NARROWING
+                }
 
                 dial.currentTime = currentTime
                 dial.currentTimeElapsed = currentTimeElapsed
+                dial.currentTimeAngleDirection = currentTimeAngleDirection
 
                 timer.text = text
 
@@ -152,6 +160,7 @@ class Dash(context: Context) : RelativeLayout(context) {
         savedState.restTime = restTime
         savedState.numberOfSets = numberOfSets
         savedState.totalTimeElapsed = totalTimeElapsed
+        savedState.currentTimeAngleDirection = currentTimeAngleDirection
 
         return savedState
     }
@@ -165,6 +174,7 @@ class Dash(context: Context) : RelativeLayout(context) {
         restTime = savedState.restTime
         numberOfSets = savedState.numberOfSets
         totalTimeElapsed = savedState.totalTimeElapsed
+        currentTimeAngleDirection = savedState.currentTimeAngleDirection
 
         resume()
     }
@@ -174,12 +184,14 @@ class Dash(context: Context) : RelativeLayout(context) {
         var restTime = 0
         var numberOfSets = 0
         var totalTimeElapsed = 0
+        var currentTimeAngleDirection = Direction.WIDENING
 
         constructor(source: Parcel) : super(source) {
             workTime = source.readInt()
             restTime = source.readInt()
             numberOfSets = source.readInt()
             totalTimeElapsed = source.readInt()
+            currentTimeAngleDirection = Direction.values()[source.readInt()]
         }
 
         constructor(superState: Parcelable) : super(superState)
@@ -191,6 +203,7 @@ class Dash(context: Context) : RelativeLayout(context) {
             out.writeInt(restTime)
             out.writeInt(numberOfSets)
             out.writeInt(totalTimeElapsed)
+            out.writeInt(currentTimeAngleDirection.ordinal)
         }
 
         companion object {

@@ -172,7 +172,7 @@ class Dial(context: Context) : View(context) {
         canvas.rotate(-90F, cx, cy)
 
         // Draw oval for dial
-        drawDialOval(canvas, dialRect, dialPaint)
+        drawDialOval(canvas)
 
         drawTimeArc(
             canvas,
@@ -191,8 +191,8 @@ class Dial(context: Context) : View(context) {
         canvas.restore()
     }
 
-    private fun drawDialOval(canvas: Canvas, rect: RectF, paint: Paint) {
-        canvas.drawOval(rect, paint)
+    private fun drawDialOval(canvas: Canvas) {
+        canvas.drawOval(dialRect, dialPaint)
     }
 
     private fun drawTimeArc(
@@ -214,7 +214,7 @@ class Dial(context: Context) : View(context) {
         val angle =
             ((if (direction != Direction.NARROWING) 0 else 1) - timeElapsed / time.toFloat()) * 360
 
-        if (direction != Direction.WIDENING && angle == 0F) {
+        if (direction == Direction.WIDENING && angle == -360F) {
             return 360F
         }
 

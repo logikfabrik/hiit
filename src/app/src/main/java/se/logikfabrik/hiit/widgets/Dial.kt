@@ -62,7 +62,7 @@ class Dial(context: Context) : View(context) {
             field = v
         }
 
-    var currentTimeAngleDirection = Direction.WIDENING
+    var currentTimeAngleDirection = Direction.NARROWING
         set(value) {
             field = value
 

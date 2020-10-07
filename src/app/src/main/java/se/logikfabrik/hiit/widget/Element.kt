@@ -1,4 +1,4 @@
-package se.logikfabrik.hiit.widgets
+package se.logikfabrik.hiit.widget
 
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
@@ -9,8 +9,6 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
-import se.logikfabrik.hiit.R
-import java.util.Collections.rotate
 
 class Element(context: Context, attrs: AttributeSet) : View(context, attrs) {
     /*

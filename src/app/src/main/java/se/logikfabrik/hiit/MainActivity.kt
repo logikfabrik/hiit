@@ -7,10 +7,10 @@ import android.os.Handler
 import android.util.Log
 import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
-import se.logikfabrik.hiit.widgets.Dial
-import se.logikfabrik.hiit.widgets.Element
-import se.logikfabrik.hiit.widgets.MyTimePicker
-import se.logikfabrik.hiit.widgets.MyTimerStartAnimator
+import se.logikfabrik.hiit.widget.Dial
+import se.logikfabrik.hiit.widget.Element
+import se.logikfabrik.hiit.widget.MyTimePicker
+import se.logikfabrik.hiit.widget.MyTimerStartAnimator
 
 class MainActivity : AppCompatActivity() {
 

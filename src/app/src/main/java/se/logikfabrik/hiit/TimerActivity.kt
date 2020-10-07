@@ -3,8 +3,8 @@ package se.logikfabrik.hiit
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import se.logikfabrik.hiit.widgets.Controls
-import se.logikfabrik.hiit.widgets.Dash
+import se.logikfabrik.hiit.widget.Controls
+import se.logikfabrik.hiit.widget.Dash
 
 class TimerActivity : AppCompatActivity() {
     private var dash: Dash? = null

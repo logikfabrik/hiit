@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp">
 
-                <se.logikfabrik.hiit.widgets.Dial
+                <se.logikfabrik.hiit.widget.Dial
                     android:id="@+id/timer_myTimer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -79,7 +79,7 @@
                 android:orientation="vertical" />
 
 
-            <se.logikfabrik.hiit.widgets.MyTimePicker
+            <se.logikfabrik.hiit.widget.MyTimePicker
                 android:id="@+id/work_myTimePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:text="Rest" />
 
-            <se.logikfabrik.hiit.widgets.MyTimePicker
+            <se.logikfabrik.hiit.widget.MyTimePicker
                 android:id="@+id/rest_myTimePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal" />
 
-            <se.logikfabrik.hiit.widgets.Element
+            <se.logikfabrik.hiit.widget.Element
                 android:id="@+id/shared_element"
                 android:layout_width="200dp"
                 android:layout_height="200dp"

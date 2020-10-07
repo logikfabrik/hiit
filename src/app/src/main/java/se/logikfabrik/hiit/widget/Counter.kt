@@ -1,4 +1,4 @@
-package se.logikfabrik.hiit.widgets
+package se.logikfabrik.hiit.widget
 
 import android.content.Context
 import android.view.Gravity
@@ -6,7 +6,7 @@ import android.widget.LinearLayout
 import android.widget.TextSwitcher
 import android.widget.TextView
 
-class Timer(context: Context) : LinearLayout(context) {
+class Counter(context: Context) : LinearLayout(context) {
 
     private val textTextSwitcher: TextSwitcher
     private val currentTimeTextSwitcher: TextSwitcher

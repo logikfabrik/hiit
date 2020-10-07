@@ -1,4 +1,4 @@
-package se.logikfabrik.hiit.widgets
+package se.logikfabrik.hiit.widget
 
 import android.content.Context
 import android.os.CountDownTimer
@@ -32,15 +32,15 @@ class Dash(context: Context) : RelativeLayout(context) {
         dial.currentTime = 0
         dial.currentTimeElapsed = 0
 
-        timer.currentTime = if (!stopped) {
+        counter.currentTime = if (!stopped) {
             this.workTime
         } else {
             0
         }
-        timer.currentTimeElapsed = 0
+        counter.currentTimeElapsed = 0
 
-        timer.numberOfSets = this.numberOfSets
-        timer.numberOfSetsElapsed = if (stopped) {
+        counter.numberOfSets = this.numberOfSets
+        counter.numberOfSetsElapsed = if (stopped) {
             this.numberOfSets - 1
         } else {
             0
@@ -89,18 +89,18 @@ class Dash(context: Context) : RelativeLayout(context) {
                 dial.currentTimeElapsed = currentTimeElapsed
                 dial.currentTimeAngleDirection = currentTimeAngleDirection
 
-                timer.text = text
+                counter.text = text
 
-                timer.currentTime = currentTime
-                timer.currentTimeElapsed = currentTimeElapsed
+                counter.currentTime = currentTime
+                counter.currentTimeElapsed = currentTimeElapsed
 
-                timer.numberOfSetsElapsed = numberOfSetsElapsed
+                counter.numberOfSetsElapsed = numberOfSetsElapsed
 
                 emitter.emit()
             }
 
             override fun onFinish() {
-                timer.text = "Done"
+                counter.text = "Done"
             }
         }.start()
     }
@@ -121,7 +121,7 @@ class Dash(context: Context) : RelativeLayout(context) {
 
     private val dial: Dial
 
-    private val timer: Timer
+    private val counter: Counter
 
     private var countDownTimer: CountDownTimer? = null
 
@@ -130,12 +130,12 @@ class Dash(context: Context) : RelativeLayout(context) {
 
         emitter = Emitter(context)
         dial = Dial(context)
-        timer = Timer(context)
+        counter = Counter(context)
 
         addView(emitter)
         addView(dial)
         addView(
-            timer,
+            counter,
             LayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT

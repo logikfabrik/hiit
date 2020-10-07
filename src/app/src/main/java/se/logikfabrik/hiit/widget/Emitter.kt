@@ -1,4 +1,4 @@
-package se.logikfabrik.hiit.widgets
+package se.logikfabrik.hiit.widget
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
@@ -8,7 +8,7 @@ import android.graphics.Paint
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.RelativeLayout
-import java.util.LinkedList
+import java.util.*
 
 class Emitter(context: Context) : RelativeLayout(context) {
 

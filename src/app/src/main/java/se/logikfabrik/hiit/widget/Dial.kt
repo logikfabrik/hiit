@@ -1,4 +1,4 @@
-package se.logikfabrik.hiit.widgets
+package se.logikfabrik.hiit.widget
 
 import android.animation.ValueAnimator
 import android.content.Context

@@ -1,42 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <se.logikfabrik.hiit.widget.Dash
+        android:id="@+id/dash"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@id/counterFragment"
+        android:layout_alignParentTop="true" />
 
-        <se.logikfabrik.hiit.widget.Dash
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <!--
-                <se.logikfabrik.hiit.widgets.MyTimer
-                    android:id="@+id/timer_myTimer"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="H,1:1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+    <fragment
+        android:id="@+id/counterFragment"
+        android:name="se.logikfabrik.hiit.CounterFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
-                <se.logikfabrik.hiit.widgets.EndElement
-                    android:id="@+id/shared_element"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:transitionName="robot"
-                    app:layout_constraintDimensionRatio="H,1:1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-        -->
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+</RelativeLayout>
 
 
 

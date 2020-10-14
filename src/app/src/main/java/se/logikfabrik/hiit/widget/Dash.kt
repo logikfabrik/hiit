@@ -4,9 +4,10 @@ import android.content.Context
 import android.os.CountDownTimer
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.AttributeSet
 import android.widget.RelativeLayout
 
-class Dash(context: Context) : RelativeLayout(context) {
+class Dash(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
 
     private var workTime = 0
     private var restTime = 0

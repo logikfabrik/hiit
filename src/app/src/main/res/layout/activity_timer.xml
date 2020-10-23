@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <se.logikfabrik.hiit.widget.Dash
+        android:id="@+id/dash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/counterFragment"
+        android:layout_alignParentTop="true" />
+
+    <fragment
+        android:id="@+id/counterFragment"
+        android:name="se.logikfabrik.hiit.CounterFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
+
+
+

@@ -14,7 +14,7 @@ class Dash(context: Context, attrs: AttributeSet) : RelativeLayout(context, attr
     private var numberOfSets = 0
     private var totalTime = 0
     private var totalTimeElapsed = 0
-    private var currentTimeAngleDirection = Direction.WIDENING
+    private var currentTimeArcScale = ArcScale.GROWING
 
     fun start(workTime: Int, restTime: Int, numberOfSets: Int) {
 
@@ -79,16 +79,16 @@ class Dash(context: Context, attrs: AttributeSet) : RelativeLayout(context, attr
 
                 dial.totalTime = totalTime
                 dial.totalTimeElapsed = totalTimeElapsed
-                dial.totalTimeAngleDirection = Direction.NARROWING
+                dial.totalTimeArcScale = ArcScale.SHRINKING
 
                 if (currentTimeElapsed == 1) {
-                    currentTimeAngleDirection =
-                        if (currentTimeAngleDirection == Direction.NARROWING) Direction.WIDENING else Direction.NARROWING
+                    currentTimeArcScale =
+                        if (currentTimeArcScale == ArcScale.SHRINKING) ArcScale.GROWING else ArcScale.SHRINKING
                 }
 
                 dial.currentTime = currentTime
                 dial.currentTimeElapsed = currentTimeElapsed
-                dial.currentTimeAngleDirection = currentTimeAngleDirection
+                dial.currentTimeArcScale = currentTimeArcScale
 
                 counter.text = text
 
@@ -161,7 +161,7 @@ class Dash(context: Context, attrs: AttributeSet) : RelativeLayout(context, attr
         savedState.restTime = restTime
         savedState.numberOfSets = numberOfSets
         savedState.totalTimeElapsed = totalTimeElapsed
-        savedState.currentTimeAngleDirection = currentTimeAngleDirection
+        savedState.currentTimeArcScale = currentTimeArcScale
 
         return savedState
     }
@@ -175,7 +175,7 @@ class Dash(context: Context, attrs: AttributeSet) : RelativeLayout(context, attr
         restTime = savedState.restTime
         numberOfSets = savedState.numberOfSets
         totalTimeElapsed = savedState.totalTimeElapsed
-        currentTimeAngleDirection = savedState.currentTimeAngleDirection
+        currentTimeArcScale = savedState.currentTimeArcScale
 
         resume()
     }
@@ -185,14 +185,14 @@ class Dash(context: Context, attrs: AttributeSet) : RelativeLayout(context, attr
         var restTime = 0
         var numberOfSets = 0
         var totalTimeElapsed = 0
-        var currentTimeAngleDirection = Direction.WIDENING
+        var currentTimeArcScale = ArcScale.GROWING
 
         constructor(source: Parcel) : super(source) {
             workTime = source.readInt()
             restTime = source.readInt()
             numberOfSets = source.readInt()
             totalTimeElapsed = source.readInt()
-            currentTimeAngleDirection = Direction.values()[source.readInt()]
+            currentTimeArcScale = ArcScale.values()[source.readInt()]
         }
 
         constructor(superState: Parcelable) : super(superState)
@@ -204,7 +204,7 @@ class Dash(context: Context, attrs: AttributeSet) : RelativeLayout(context, attr
             out.writeInt(restTime)
             out.writeInt(numberOfSets)
             out.writeInt(totalTimeElapsed)
-            out.writeInt(currentTimeAngleDirection.ordinal)
+            out.writeInt(currentTimeArcScale.ordinal)
         }
 
         companion object {

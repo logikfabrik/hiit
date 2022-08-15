@@ -10,7 +10,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 
-// The dial animates its current time and total time arcs as time elapses.
+// The dial animates its arcs as its properties for time, time elapsed, and arc scale are changed.
 class Dial(context: Context) : View(context) {
     var totalTime = 0
         set(value) {
@@ -34,7 +34,7 @@ class Dial(context: Context) : View(context) {
             field = v
         }
 
-    var totalTimeAngleDirection = Direction.NARROWING
+    var totalTimeArcScale = ArcScale.SHRINKING
         set(value) {
             field = value
 
@@ -63,7 +63,7 @@ class Dial(context: Context) : View(context) {
             field = v
         }
 
-    var currentTimeAngleDirection = Direction.NARROWING
+    var currentTimeArcScale = ArcScale.SHRINKING
         set(value) {
             field = value
 
@@ -184,24 +184,24 @@ class Dial(context: Context) : View(context) {
     }
 
     private fun drawTotalTimeArc(canvas: Canvas) {
-        drawTimeArc(
+        drawArc(
             canvas,
             totalTimeRect,
-            getAngle(totalTimeElapsedValue, totalTime, totalTimeAngleDirection),
+            getArcAngle(totalTimeElapsedValue, totalTime, totalTimeArcScale),
             totalTimePaint
         )
     }
 
     private fun drawCurrentTimeArc(canvas: Canvas) {
-        drawTimeArc(
+        drawArc(
             canvas,
             currentTimeRect,
-            getAngle(currentTimeElapsedValue, currentTime, currentTimeAngleDirection),
+            getArcAngle(currentTimeElapsedValue, currentTime, currentTimeArcScale),
             currentTimePaint
         )
     }
 
-    private fun drawTimeArc(
+    private fun drawArc(
         canvas: Canvas,
         rect: RectF,
         angle: Float,
@@ -216,11 +216,11 @@ class Dial(context: Context) : View(context) {
         }
     }
 
-    private fun getAngle(timeElapsed: Float, time: Int, direction: Direction): Float {
+    private fun getArcAngle(timeElapsed: Float, time: Int, arcScale: ArcScale): Float {
         val angle =
-            ((if (direction != Direction.NARROWING) 0 else 1) - timeElapsed / time.toFloat()) * 360
+            ((if (arcScale != ArcScale.SHRINKING) 0 else 1) - timeElapsed / time.toFloat()) * 360
 
-        if (direction == Direction.WIDENING && angle == -360F) {
+        if (arcScale == ArcScale.GROWING && angle == -360F) {
             return 360F
         }
 

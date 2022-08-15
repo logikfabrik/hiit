@@ -10,13 +10,16 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.RelativeLayout
 import java.util.*
 
+private const val MAX_PULSE_COUNT = 4
+
+// The emitter emits a pulse each time its emit function is called.
 class Emitter(context: Context) : RelativeLayout(context) {
 
     private class Pulse(context: Context) : View(context) {
 
-        private var r = 0F
-        private var cx = 0F
-        private var cy = 0F
+        private var radius = 0F
+        private var centerX = 0F
+        private var centerY = 0F
 
         init {
             alpha = 0F
@@ -31,23 +34,24 @@ class Emitter(context: Context) : RelativeLayout(context) {
             }
         }
 
-        override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-            super.onSizeChanged(w, h, oldw, oldh)
+        override fun onSizeChanged(newWidth: Int, newHeight: Int, oldWidth: Int, oldHeight: Int) {
+            super.onSizeChanged(newWidth, newHeight, oldWidth, oldHeight)
 
-            r = (minOf(w, h) - paint.strokeWidth) / 2.2F
-            cx = w / 2F
-            cy = h / 2F
+            radius = (minOf(newWidth, newHeight) - paint.strokeWidth) / 2.2F
+            centerX = newWidth / 2F
+            centerY = newHeight / 2F
         }
 
         override fun onDraw(canvas: Canvas) {
-            canvas.drawCircle(cx, cy, r, paint)
+            canvas.drawCircle(centerX, centerY, radius, paint)
         }
     }
 
     private val animators: LinkedList<ObjectAnimator>
 
     init {
-        val pulses = (0..4).map {
+        // Create MAX_PULSE_COUNT pulses and add them to the layout.
+        val pulses = (0..MAX_PULSE_COUNT).map {
             Pulse(context)
         }
 
@@ -55,6 +59,7 @@ class Emitter(context: Context) : RelativeLayout(context) {
             addView(pulse)
         }
 
+        // Create an animator for each pulse.
         animators = LinkedList(pulses.map { pulse -> createAnimator(pulse) })
     }
 
@@ -65,7 +70,7 @@ class Emitter(context: Context) : RelativeLayout(context) {
             PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 2F),
             PropertyValuesHolder.ofFloat(View.ALPHA, 1F, 0F)
         ).apply {
-            duration = 5000
+            duration = MAX_PULSE_COUNT * 1000L
             interpolator = DecelerateInterpolator()
         }
     }
@@ -73,10 +78,12 @@ class Emitter(context: Context) : RelativeLayout(context) {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
+        // Cancel all animators.
         animators.forEach { animator -> animator.cancel() }
     }
 
     fun emit() {
+        // Start/restart one animator at a time, over and over again.
         val animator = animators.poll() ?: return
 
         animator.start()

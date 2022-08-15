@@ -10,6 +10,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 
+// The dial animates its current time and total time arcs as time elapses.
 class Dial(context: Context) : View(context) {
     var totalTime = 0
         set(value) {
@@ -69,8 +70,8 @@ class Dial(context: Context) : View(context) {
             postInvalidateOnAnimation()
         }
 
-    private var cx = 0F
-    private var cy = 0F
+    private var centerX = 0F
+    private var centerY = 0F
 
     private var dialRect = RectF()
     private var totalTimeRect = RectF()
@@ -127,19 +128,19 @@ class Dial(context: Context) : View(context) {
         }
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
+    override fun onSizeChanged(newWidth: Int, newHeight: Int, oldWidth: Int, oldHeight: Int) {
+        super.onSizeChanged(newWidth, newHeight, oldWidth, oldHeight)
 
-        cx = w / 2F
-        cy = h / 2F
+        centerX = newWidth / 2F
+        centerY = newHeight / 2F
 
-        val r = minOf(w, h) / 2.2F
+        val radius = minOf(newWidth, newHeight) / 2.2F
 
         val baseRect = RectF(
-            cx - r,
-            cy - r,
-            cx + r,
-            cy + r
+            centerX - radius,
+            centerY - radius,
+            centerX + radius,
+            centerY + radius
         )
 
         dialRect = RectF(baseRect).apply {
@@ -169,30 +170,35 @@ class Dial(context: Context) : View(context) {
 
         canvas.save()
 
-        canvas.rotate(-90F, cx, cy)
+        canvas.rotate(-90F, centerX, centerY)
 
-        // Draw oval for dial
         drawDialOval(canvas)
-
-        drawTimeArc(
-            canvas,
-            totalTimeRect,
-            getAngle(totalTimeElapsedValue, totalTime, totalTimeAngleDirection),
-            totalTimePaint
-        )
-
-        drawTimeArc(
-            canvas,
-            currentTimeRect,
-            getAngle(currentTimeElapsedValue, currentTime, currentTimeAngleDirection),
-            currentTimePaint
-        )
+        drawTotalTimeArc(canvas)
+        drawCurrentTimeArc(canvas)
 
         canvas.restore()
     }
 
     private fun drawDialOval(canvas: Canvas) {
         canvas.drawOval(dialRect, dialPaint)
+    }
+
+    private fun drawTotalTimeArc(canvas: Canvas) {
+        drawTimeArc(
+            canvas,
+            totalTimeRect,
+            getAngle(totalTimeElapsedValue, totalTime, totalTimeAngleDirection),
+            totalTimePaint
+        )
+    }
+
+    private fun drawCurrentTimeArc(canvas: Canvas) {
+        drawTimeArc(
+            canvas,
+            currentTimeRect,
+            getAngle(currentTimeElapsedValue, currentTime, currentTimeAngleDirection),
+            currentTimePaint
+        )
     }
 
     private fun drawTimeArc(

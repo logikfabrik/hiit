@@ -6,16 +6,41 @@
     <se.logikfabrik.hiit.widget.Dash
         android:id="@+id/dash"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/counterFragment"
-        android:layout_alignParentTop="true" />
+        android:layout_height="match_parent" />
 
-    <fragment
-        android:id="@+id/counterFragment"
-        android:name="se.logikfabrik.hiit.CounterFragment"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/startNewButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onStartNewButtonClick"
+            android:text="START NEW" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onStartButtonClick"
+            android:text="START" />
+
+        <Button
+            android:id="@+id/pauseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onPauseButtonClick"
+            android:text="PAUSE" />
+
+        <Button
+            android:id="@+id/stopButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onStopButtonClick"
+            android:text="STOP" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
 </RelativeLayout>
 

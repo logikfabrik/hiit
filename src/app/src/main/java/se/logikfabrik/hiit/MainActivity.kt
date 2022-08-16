@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity() {
 
         timerMyTimer = findViewById(R.id.timer_myTimer)
 
-        timerMyTimer?.currentTime = 100
-        timerMyTimer?.currentTimeElapsed = 50
+        timerMyTimer?.setTime = 100
+        timerMyTimer?.setTimeElapsed = 50
 
         timerMyTimer?.totalTime = 200
         timerMyTimer?.totalTimeElapsed = 50

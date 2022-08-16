@@ -41,29 +41,29 @@ class Dial(context: Context) : View(context) {
             postInvalidateOnAnimation()
         }
 
-    var currentTime = 0
+    var setTime = 0
         set(value) {
             field = value.coerceAtLeast(0)
 
             postInvalidateOnAnimation()
         }
 
-    var currentTimeElapsed = 0
+    var setTimeElapsed = 0
         set(value) {
             val v = value.coerceAtLeast(0)
 
             if (v > field) {
-                currentTimeAnimator.setFloatValues(field.toFloat(), v.toFloat())
-                currentTimeAnimator.start()
+                setTimeAnimator.setFloatValues(field.toFloat(), v.toFloat())
+                setTimeAnimator.start()
             } else {
-                currentTimeAnimator.setFloatValues(0F, v.toFloat())
-                currentTimeAnimator.start()
+                setTimeAnimator.setFloatValues(0F, v.toFloat())
+                setTimeAnimator.start()
             }
 
             field = v
         }
 
-    var currentTimeArcScale = ArcScale.SHRINKING
+    var setTimeArcScale = ArcScale.SHRINKING
         set(value) {
             field = value
 
@@ -75,21 +75,21 @@ class Dial(context: Context) : View(context) {
 
     private var dialRect = RectF()
     private var totalTimeRect = RectF()
-    private var currentTimeRect = RectF()
+    private var setTimeRect = RectF()
 
     private val totalTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
         repeatCount = 0
         duration = 1000
         interpolator = LinearInterpolator()
     }
-    private val currentTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
+    private val setTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
         repeatCount = 0
         duration = 1000
         interpolator = DecelerateInterpolator()
     }
 
     private var totalTimeElapsedValue = 0F
-    private var currentTimeElapsedValue = 0F
+    private var setTimeElapsedValue = 0F
 
     init {
         totalTimeAnimator.addUpdateListener { animation ->
@@ -98,8 +98,8 @@ class Dial(context: Context) : View(context) {
             postInvalidateOnAnimation()
         }
 
-        currentTimeAnimator.addUpdateListener { animation ->
-            currentTimeElapsedValue = animation.animatedValue as Float
+        setTimeAnimator.addUpdateListener { animation ->
+            setTimeElapsedValue = animation.animatedValue as Float
 
             postInvalidateOnAnimation()
         }
@@ -120,7 +120,7 @@ class Dial(context: Context) : View(context) {
             strokeWidth = 20F
         }
 
-        private val currentTimePaint = Paint().apply {
+        private val setTimePaint = Paint().apply {
             isAntiAlias = true
             color = 0XFF333333.toInt()
             style = Paint.Style.STROKE
@@ -157,10 +157,10 @@ class Dial(context: Context) : View(context) {
             )
         }
 
-        currentTimeRect = RectF(baseRect).apply {
+        setTimeRect = RectF(baseRect).apply {
             inset(
-                totalTimePaint.strokeWidth + (currentTimePaint.strokeWidth / 2),
-                totalTimePaint.strokeWidth + (currentTimePaint.strokeWidth / 2)
+                totalTimePaint.strokeWidth + (setTimePaint.strokeWidth / 2),
+                totalTimePaint.strokeWidth + (setTimePaint.strokeWidth / 2)
             )
         }
     }
@@ -174,7 +174,7 @@ class Dial(context: Context) : View(context) {
 
         drawDialOval(canvas)
         drawTotalTimeArc(canvas)
-        drawCurrentTimeArc(canvas)
+        drawSetTimeArc(canvas)
 
         canvas.restore()
     }
@@ -192,12 +192,12 @@ class Dial(context: Context) : View(context) {
         )
     }
 
-    private fun drawCurrentTimeArc(canvas: Canvas) {
+    private fun drawSetTimeArc(canvas: Canvas) {
         drawArc(
             canvas,
-            currentTimeRect,
-            getArcAngle(currentTimeElapsedValue, currentTime, currentTimeArcScale),
-            currentTimePaint
+            setTimeRect,
+            getArcAngle(setTimeElapsedValue, setTime, setTimeArcScale),
+            setTimePaint
         )
     }
 

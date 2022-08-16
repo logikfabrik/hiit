@@ -9,7 +9,7 @@ import android.widget.TextView
 class Counter(context: Context) : LinearLayout(context) {
 
     private val textTextSwitcher: TextSwitcher
-    private val currentTimeTextSwitcher: TextSwitcher
+    private val setTimeTextSwitcher: TextSwitcher
     private val numberOfSetsTextSwitcher: TextSwitcher
 
     var text = ""
@@ -19,18 +19,18 @@ class Counter(context: Context) : LinearLayout(context) {
             updateText()
         }
 
-    var currentTime = 0
+    var setTime = 0
         set(value) {
             field = value.coerceAtLeast(0)
 
-            updateCurrentTime()
+            updateSetTime()
         }
 
-    var currentTimeElapsed = 0
+    var setTimeElapsed = 0
         set(value) {
             field = value.coerceAtLeast(0)
 
-            updateCurrentTime()
+            updateSetTime()
         }
 
     var numberOfSets = 1
@@ -60,7 +60,7 @@ class Counter(context: Context) : LinearLayout(context) {
             setFactory(factory)
         }
 
-        currentTimeTextSwitcher = TextSwitcher(context).apply {
+        setTimeTextSwitcher = TextSwitcher(context).apply {
             setFactory(factory)
         }
 
@@ -69,7 +69,7 @@ class Counter(context: Context) : LinearLayout(context) {
         }
 
         addView(textTextSwitcher)
-        addView(currentTimeTextSwitcher)
+        addView(setTimeTextSwitcher)
         addView(numberOfSetsTextSwitcher)
     }
 
@@ -77,12 +77,12 @@ class Counter(context: Context) : LinearLayout(context) {
         textTextSwitcher.setText(text)
     }
 
-    private fun updateCurrentTime() {
-        val time = currentTime - currentTimeElapsed
+    private fun updateSetTime() {
+        val time = setTime - setTimeElapsed
         val minutes = time / 60
         val seconds = time % 60
 
-        currentTimeTextSwitcher.setText("%02d:%02d".format(minutes, seconds))
+        setTimeTextSwitcher.setText("%02d:%02d".format(minutes, seconds))
     }
 
     private fun updateNumberOfSets() {

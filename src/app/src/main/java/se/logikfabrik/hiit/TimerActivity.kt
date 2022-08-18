@@ -4,14 +4,17 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 
 class TimerActivity : AppCompatActivity() {
 
     private var service: WorkoutCountDownService? = null
+
     private val connection = object : ServiceConnection {
 
         override fun onServiceConnected(name: ComponentName, binder: IBinder) {
@@ -28,10 +31,14 @@ class TimerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_timer)
     }
 
+
     override fun onStart() {
         super.onStart()
 
-        Intent(this, WorkoutCountDownService::class.java).also { intent ->
+        val intent = Intent(this, WorkoutCountDownService::class.java);
+
+        intent.also { intent ->
+            startService(intent)
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
@@ -56,5 +63,9 @@ class TimerActivity : AppCompatActivity() {
 
     fun onStopButtonClick(button: View) {
         service?.stop()
+    }
+
+    fun onCloseButtonClick(button: View) {
+        finish()
     }
 }

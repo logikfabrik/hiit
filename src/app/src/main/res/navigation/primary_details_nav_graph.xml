@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/workout_list_fragment">
+
+    <fragment
+        android:id="@+id/workout_list_fragment"
+        android:name="se.logikfabrik.hiit.WorkoutListFragment"
+        android:label="WorkoutListFragment">
+        <action
+            android:id="@+id/show_workout_detail"
+            app:destination="@id/workout_detail_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/workout_detail_fragment"
+        android:name="se.logikfabrik.hiit.WorkoutDetailFragment"
+        android:label="workout_detail"
+        tools:layout="@layout/fragment_workout_detail">
+        <argument
+            android:name="item_id"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
+</navigation>

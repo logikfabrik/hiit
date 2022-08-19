@@ -50,7 +50,7 @@ class TimerActivity : AppCompatActivity() {
     }
 
     fun onStartNewButtonClick(button: View) {
-        service?.startNew(WorkoutCountDownTimer.Workout(60, 10, 3))
+        service?.startNew(WorkoutCountDownTimer.Workout(10, 5, 3))
     }
 
     fun onStartButtonClick(button: View) {

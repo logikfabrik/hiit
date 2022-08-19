@@ -1,8 +1,9 @@
 package se.logikfabrik.hiit
 
 import android.os.CountDownTimer
-import android.util.Log
 import org.greenrobot.eventbus.EventBus
+import se.logikfabrik.hiit.models.getNumberOfSetsElapsed
+import se.logikfabrik.hiit.models.getSetTimeElapsedInSeconds
 
 class WorkoutCountDownTimer(private val workout: Workout) {
     private var countDownTimer: CountDownTimer? = null
@@ -27,28 +28,36 @@ class WorkoutCountDownTimer(private val workout: Workout) {
         val setTimeElapsed: Int
 
         init {
+            val testWorkout = se.logikfabrik.hiit.models.Workout(workout.workTime, workout.restTime, workout.numberOfSets)
+
+            /*
             var numberOfSetsElapsed =
                 countDown.totalTimeElapsed / (workout.workTime + workout.restTime)
 
             if (countDown.totalTimeElapsed % (workout.workTime + workout.restTime) == 0) {
                 numberOfSetsElapsed--
-            }
-
+           }
             this.numberOfSetsElapsed = numberOfSetsElapsed
+             */
+
+            numberOfSetsElapsed = testWorkout.getNumberOfSetsElapsed(countDown.totalTimeElapsed)
 
             val setTime: Int
+            /*
             var setTimeElapsed =
                 countDown.totalTimeElapsed - (numberOfSetsElapsed * (workout.workTime + workout.restTime))
+*/
+            setTimeElapsed = testWorkout.getSetTimeElapsedInSeconds(countDown.totalTimeElapsed)
 
-            if (setTimeElapsed <= workout.workTime) {
+            if (setTimeElapsed < workout.workTime) {
                 setTime = workout.workTime
             } else {
                 setTime = workout.restTime
-                setTimeElapsed -= workout.workTime
+                //setTimeElapsed -= workout.workTime
             }
 
             this.setTime = setTime
-            this.setTimeElapsed = setTimeElapsed
+            //this.setTimeElapsed = setTimeElapsed
         }
     }
 

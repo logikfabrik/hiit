@@ -5,26 +5,26 @@ import org.junit.Test
 
 class WorkoutTest {
     @Test
-    fun workInSeconds_Should_ReturnWorkInSeconds() {
-        val sut = Workout(45, 10, 15)
+    fun workTimeMillis_Should_ReturnWorkTimeMillis() {
+        val sut = Workout(45000, 10000, 15)
 
-        val workInSeconds = sut.workInSeconds
+        val workTimeMillis = sut.workTimeMillis
 
-        assertEquals(45, workInSeconds)
+        assertEquals(45000, workTimeMillis)
     }
 
     @Test
-    fun restInSeconds_Should_ReturnRestInSeconds() {
-        val sut = Workout(45, 10, 15)
+    fun restTimeMillis_Should_ReturnRestTimeMillis() {
+        val sut = Workout(45000, 10000, 15)
 
-        val restInSeconds = sut.restInSeconds
+        val restTimeMillis = sut.restTimeMillis
 
-        assertEquals(10, restInSeconds)
+        assertEquals(10000, restTimeMillis)
     }
 
     @Test
     fun numberOfSets_Should_ReturnNumberOfSets() {
-        val sut = Workout(45, 10, 15)
+        val sut = Workout(45000, 10000, 15)
 
         val numberOfSets = sut.numberOfSets
 
@@ -32,11 +32,20 @@ class WorkoutTest {
     }
 
     @Test
-    fun timeInSeconds_Should_ReturnTimeInSeconds() {
-        val sut = Workout(45, 10, 15)
+    fun setTimeMillis_Should_ReturnSetTimeMillis() {
+        val sut = Workout(45000, 10000, 15)
 
-        val timeInSeconds = sut.timeInSeconds
+        val setTimeMillis = sut.setTimeMillis
 
-        assertEquals(815, timeInSeconds)
+        assertEquals(55000, setTimeMillis)
+    }
+
+    @Test
+    fun timeMillis_Should_ReturnTimeMillis() {
+        val sut = Workout(45000, 10000, 15)
+
+        val timeMillis = sut.timeMillis
+
+        assertEquals(815000, timeMillis)
     }
 }

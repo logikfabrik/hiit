@@ -6,100 +6,91 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
+import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 
 // The dial animates its arcs as its properties for time, time elapsed, and arc scale are changed.
-class Dial(context: Context) : View(context) {
-    var totalTime = 0
+class Dial(context: Context, attrs: AttributeSet) : View(context, attrs) {
+    var timeMillis = 0L
         set(value) {
-            field = value.coerceAtLeast(0)
+            require(value >= 0)
 
-            postInvalidateOnAnimation()
-        }
-
-    var totalTimeElapsed = 0
-        set(value) {
-            val v = value.coerceAtLeast(0)
-
-            if (v > field) {
-                totalTimeAnimator.setFloatValues(field.toFloat(), v.toFloat())
-                totalTimeAnimator.start()
-            } else {
-                totalTimeAnimator.setFloatValues(0F, v.toFloat())
-                totalTimeAnimator.start()
-            }
-
-            field = v
-        }
-
-    var totalTimeArcScale = ArcScale.SHRINKING
-        set(value) {
             field = value
 
             postInvalidateOnAnimation()
         }
 
-    var setTime = 0
+    var elapsedTimeMillis = 0L
         set(value) {
-            field = value.coerceAtLeast(0)
+            require(value >= 0)
 
-            postInvalidateOnAnimation()
-        }
-
-    var setTimeElapsed = 0
-        set(value) {
-            val v = value.coerceAtLeast(0)
-
-            if (v > field) {
-                setTimeAnimator.setFloatValues(field.toFloat(), v.toFloat())
-                setTimeAnimator.start()
+            if (value > field) {
+                timeAnimator.setFloatValues(field.toFloat(), value.toFloat())
             } else {
-                setTimeAnimator.setFloatValues(0F, v.toFloat())
-                setTimeAnimator.start()
+                timeAnimator.setFloatValues(0F, value.toFloat())
             }
 
-            field = v
+            timeAnimator.start()
+
+            field = value
         }
 
-    var setTimeArcScale = ArcScale.SHRINKING
+    var stageTimeMillis = 0L
         set(value) {
+            require(value >= 0)
+
             field = value
 
             postInvalidateOnAnimation()
+        }
+
+    var elapsedStageTimeMillis = 0L
+        set(value) {
+            require(value >= 0)
+
+            if (value > field) {
+                stageTimeAnimator.setFloatValues(field.toFloat(), value.toFloat())
+            } else {
+                stageTimeAnimator.setFloatValues(0F, value.toFloat())
+            }
+
+            stageTimeAnimator.start()
+
+            field = value
         }
 
     private var centerX = 0F
     private var centerY = 0F
 
     private var dialRect = RectF()
-    private var totalTimeRect = RectF()
-    private var setTimeRect = RectF()
+    private var timeRect = RectF()
+    private var stageTimeRect = RectF()
 
-    private val totalTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
+    private val timeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
         repeatCount = 0
         duration = 1000
         interpolator = LinearInterpolator()
     }
-    private val setTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
+    private val stageTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
         repeatCount = 0
         duration = 1000
         interpolator = DecelerateInterpolator()
     }
 
-    private var totalTimeElapsedValue = 0F
-    private var setTimeElapsedValue = 0F
+    private var elapsedTimeValue = 0F
+    private var elapsedStageTimeValue = 0F
 
     init {
-        totalTimeAnimator.addUpdateListener { animation ->
-            totalTimeElapsedValue = animation.animatedValue as Float
+        timeAnimator.addUpdateListener { animation ->
+            elapsedTimeValue = animation.animatedValue as Float
 
             postInvalidateOnAnimation()
         }
 
-        setTimeAnimator.addUpdateListener { animation ->
-            setTimeElapsedValue = animation.animatedValue as Float
+        stageTimeAnimator.addUpdateListener { animation ->
+            elapsedStageTimeValue = animation.animatedValue as Float
 
             postInvalidateOnAnimation()
         }
@@ -113,7 +104,7 @@ class Dial(context: Context) : View(context) {
             strokeWidth = 70F
         }
 
-        private val totalTimePaint = Paint().apply {
+        private val timePaint = Paint().apply {
             isAntiAlias = true
             color = 0XFFFF610f.toInt()
             style = Paint.Style.STROKE
@@ -150,17 +141,17 @@ class Dial(context: Context) : View(context) {
             )
         }
 
-        totalTimeRect = RectF(baseRect).apply {
+        timeRect = RectF(baseRect).apply {
             inset(
-                totalTimePaint.strokeWidth / 2,
-                totalTimePaint.strokeWidth / 2
+                timePaint.strokeWidth / 2,
+                timePaint.strokeWidth / 2
             )
         }
 
-        setTimeRect = RectF(baseRect).apply {
+        stageTimeRect = RectF(baseRect).apply {
             inset(
-                totalTimePaint.strokeWidth + (setTimePaint.strokeWidth / 2),
-                totalTimePaint.strokeWidth + (setTimePaint.strokeWidth / 2)
+                timePaint.strokeWidth + (setTimePaint.strokeWidth / 2),
+                timePaint.strokeWidth + (setTimePaint.strokeWidth / 2)
             )
         }
     }
@@ -186,17 +177,17 @@ class Dial(context: Context) : View(context) {
     private fun drawTotalTimeArc(canvas: Canvas) {
         drawArc(
             canvas,
-            totalTimeRect,
-            getArcAngle(totalTimeElapsedValue, totalTime, totalTimeArcScale),
-            totalTimePaint
+            timeRect,
+            getArcAngle(elapsedTimeValue, timeMillis),
+            timePaint
         )
     }
 
     private fun drawSetTimeArc(canvas: Canvas) {
         drawArc(
             canvas,
-            setTimeRect,
-            getArcAngle(setTimeElapsedValue, setTime, setTimeArcScale),
+            stageTimeRect,
+            getArcAngle(elapsedStageTimeValue, stageTimeMillis),
             setTimePaint
         )
     }
@@ -216,14 +207,7 @@ class Dial(context: Context) : View(context) {
         }
     }
 
-    private fun getArcAngle(timeElapsed: Float, time: Int, arcScale: ArcScale): Float {
-        val angle =
-            ((if (arcScale != ArcScale.SHRINKING) 0 else 1) - timeElapsed / time.toFloat()) * 360
-
-        if (arcScale == ArcScale.GROWING && angle == -360F) {
-            return 360F
-        }
-
-        return angle
+    private fun getArcAngle(elapsedTimeMillis: Float, timeMillis: Long): Float {
+        return elapsedTimeMillis / timeMillis.toFloat() * 360
     }
 }

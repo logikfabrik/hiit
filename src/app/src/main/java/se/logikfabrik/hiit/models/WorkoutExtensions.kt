@@ -1,13 +1,42 @@
 package se.logikfabrik.hiit.models
 
-fun Workout.getNumberOfSetsElapsed(timeElapsedInSeconds: Int): Int {
-    require(timeElapsedInSeconds <= timeInSeconds)
+fun Workout.getNumberOfSetsElapsed(elapsedTimeMillis: Long): Long {
+    require(elapsedTimeMillis >= 0)
+    require(elapsedTimeMillis <= timeMillis)
 
-    return ((timeElapsedInSeconds.toFloat() / ((workInSeconds + restInSeconds) * numberOfSets)) * numberOfSets).toInt()
+    return ((elapsedTimeMillis.toFloat() / ((setTimeMillis) * numberOfSets)) * numberOfSets).toLong()
 }
 
-fun Workout.getSetTimeElapsedInSeconds(timeElapsedInSeconds: Int): Int {
-    require(timeElapsedInSeconds <= timeInSeconds)
+fun Workout.getElapsedSetTimeMillis(elapsedTimeMillis: Long): Long {
+    require(elapsedTimeMillis >= 0)
+    require(elapsedTimeMillis <= timeMillis)
 
-    return timeElapsedInSeconds - ((workInSeconds + restInSeconds) * getNumberOfSetsElapsed(timeElapsedInSeconds))
+    return elapsedTimeMillis % setTimeMillis
+}
+
+fun Workout.getStage(elapsedTimeMillis: Long): Workout.Stage {
+    require(elapsedTimeMillis >= 0)
+    require(elapsedTimeMillis <= timeMillis)
+
+    return if (getElapsedSetTimeMillis(elapsedTimeMillis) < workTimeMillis) {
+        Workout.Stage.WORK
+    } else {
+        Workout.Stage.REST
+    }
+}
+
+fun Workout.getStageTimeMillis(elapsedTimeMillis: Long): Long {
+    require(elapsedTimeMillis >= 0)
+    require(elapsedTimeMillis <= timeMillis)
+
+    return when (getStage(elapsedTimeMillis)) {
+        Workout.Stage.WORK -> workTimeMillis
+        Workout.Stage.REST -> restTimeMillis
+    }
+}
+
+fun Workout.getElapsedStageTimeMillis(elapsedTimeMillis: Long): Long {
+    require(elapsedTimeMillis <= timeMillis)
+
+    throw NotImplementedError()
 }

@@ -1,13 +1,13 @@
 package se.logikfabrik.hiit.widget
 
 import android.content.Context
+import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextSwitcher
 import android.widget.TextView
 
-class Counter(context: Context) : LinearLayout(context) {
-
+class Counter(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
     private val textTextSwitcher: TextSwitcher
     private val setTimeTextSwitcher: TextSwitcher
     private val numberOfSetsTextSwitcher: TextSwitcher
@@ -33,16 +33,20 @@ class Counter(context: Context) : LinearLayout(context) {
             updateSetTime()
         }
 
-    var numberOfSets = 1
+    var numberOfSets = 1L
         set(value) {
-            field = value.coerceAtLeast(1)
+            require(value >= 1)
+
+            field = value
 
             updateNumberOfSets()
         }
 
-    var numberOfSetsElapsed = 0
+    var numberOfSetsElapsed = 0L
         set(value) {
-            field = value.coerceAtLeast(0)
+            require(value >= 0)
+
+            field = value
 
             updateNumberOfSets()
         }

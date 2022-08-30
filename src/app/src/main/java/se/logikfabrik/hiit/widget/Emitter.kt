@@ -5,6 +5,7 @@ import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.RelativeLayout
@@ -13,10 +14,8 @@ import java.util.*
 private const val MAX_PULSE_COUNT = 4
 
 // The emitter emits a pulse each time its emit function is called.
-class Emitter(context: Context) : RelativeLayout(context) {
-
+class Emitter(context: Context, attrs: AttributeSet) : RelativeLayout(context, attrs) {
     private class Pulse(context: Context) : View(context) {
-
         private var radius = 0F
         private var centerX = 0F
         private var centerY = 0F

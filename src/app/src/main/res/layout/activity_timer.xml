@@ -1,30 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/purpleLight">
 
-    <se.logikfabrik.hiit.widget.Dash
-        android:id="@+id/dash"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <se.logikfabrik.hiit.widget.Emitter
+            android:id="@+id/emitter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <se.logikfabrik.hiit.widget.Dial
+            android:id="@+id/dial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <se.logikfabrik.hiit.widget.Counter
+            android:id="@+id/counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onCloseButtonClick"
             android:text="CLOSE" />
-
-        <Button
-            android:id="@+id/startNewButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onStartNewButtonClick"
-            android:text="START NEW" />
 
         <Button
             android:id="@+id/startButton"
@@ -47,8 +56,6 @@
             android:onClick="onStopButtonClick"
             android:text="STOP" />
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-
 </RelativeLayout>
 
 

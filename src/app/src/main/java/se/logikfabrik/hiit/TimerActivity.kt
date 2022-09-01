@@ -14,10 +14,13 @@ import se.logikfabrik.hiit.core.NotificationService
 import se.logikfabrik.hiit.core.TickEvent
 import se.logikfabrik.hiit.core.TimerService
 import se.logikfabrik.hiit.models.Workout
-import se.logikfabrik.hiit.models.getNumberOfSetsElapsed
+import se.logikfabrik.hiit.models.getElapsedStageTimeMillis
+import se.logikfabrik.hiit.models.getElapsedNumberOfSets
+import se.logikfabrik.hiit.models.getStageTimeMillis
 import se.logikfabrik.hiit.widget.Counter
 import se.logikfabrik.hiit.widget.Dial
 import se.logikfabrik.hiit.widget.Emitter
+import se.logikfabrik.hiit.widget.SECOND_IN_MILLIS
 
 class TimerActivity : AppCompatActivity() {
     private var service: TimerService? = null
@@ -73,7 +76,7 @@ class TimerActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        startNotificationService();
+        startNotificationService()
     }
 
     override fun onResume() {
@@ -103,13 +106,17 @@ class TimerActivity : AppCompatActivity() {
 
         dial.timeMillis = workout.timeMillis
         dial.elapsedTimeMillis = elapsedTimeMillis
+        dial.stageTimeMillis = workout.getStageTimeMillis(elapsedTimeMillis)
+        dial.elapsedStageTimeMillis = workout.getElapsedStageTimeMillis(elapsedTimeMillis)
 
-        if(elapsedTimeMillis % 1000 == 0L) {
+        if (elapsedTimeMillis % SECOND_IN_MILLIS == 0L) {
             emitter.emit()
         }
 
+        counter.stageTimeMillis = workout.getStageTimeMillis(elapsedTimeMillis)
+        counter.elapsedStageTimeMillis = workout.getElapsedStageTimeMillis(elapsedTimeMillis)
         counter.numberOfSets = workout.numberOfSets
-        counter.numberOfSetsElapsed = workout.getNumberOfSetsElapsed(elapsedTimeMillis)
+        counter.elapsedNumberOfSets = workout.getElapsedNumberOfSets(elapsedTimeMillis)
     }
 
     fun onStartButtonClick(button: View) {

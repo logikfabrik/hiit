@@ -5,12 +5,12 @@ import org.junit.Test
 
 class WorkoutExtensionsTest {
     @Test
-    fun getNumberOfSetsElapsed_Should_ReturnNumberOfSetsElapsed() {
+    fun getElapsedNumberOfSets_Should_ReturnElapsedNumberOfSets() {
         val sut = Workout(45000, 10000, 15)
 
-        val numberOfSetsElapsed = sut.getNumberOfSetsElapsed(810000)
+        val elapsedNumberOfSets = sut.getElapsedNumberOfSets(810000)
 
-        assertEquals(14, numberOfSetsElapsed)
+        assertEquals(14, elapsedNumberOfSets)
     }
 
     @Test

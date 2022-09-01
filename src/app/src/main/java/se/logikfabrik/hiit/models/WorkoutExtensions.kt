@@ -1,6 +1,6 @@
 package se.logikfabrik.hiit.models
 
-fun Workout.getNumberOfSetsElapsed(elapsedTimeMillis: Long): Long {
+fun Workout.getElapsedNumberOfSets(elapsedTimeMillis: Long): Long {
     require(elapsedTimeMillis >= 0)
     require(elapsedTimeMillis <= timeMillis)
 
@@ -38,5 +38,10 @@ fun Workout.getStageTimeMillis(elapsedTimeMillis: Long): Long {
 fun Workout.getElapsedStageTimeMillis(elapsedTimeMillis: Long): Long {
     require(elapsedTimeMillis <= timeMillis)
 
-    throw NotImplementedError()
+    val elapsedSetTimeMillis = getElapsedSetTimeMillis(elapsedTimeMillis);
+
+    return when (getStage(elapsedTimeMillis)) {
+        Workout.Stage.WORK -> elapsedSetTimeMillis
+        Workout.Stage.REST -> elapsedSetTimeMillis - workTimeMillis
+    }
 }

@@ -19,18 +19,18 @@ class Counter(context: Context, attrs: AttributeSet) : LinearLayout(context, att
             updateText()
         }
 
-    var setTime = 0
+    var stageTimeMillis = 0L
         set(value) {
             field = value.coerceAtLeast(0)
 
-            updateSetTime()
+            updateStageTime()
         }
 
-    var setTimeElapsed = 0
+    var elapsedStageTimeMillis = 0L
         set(value) {
             field = value.coerceAtLeast(0)
 
-            updateSetTime()
+            updateStageTime()
         }
 
     var numberOfSets = 1L
@@ -42,7 +42,7 @@ class Counter(context: Context, attrs: AttributeSet) : LinearLayout(context, att
             updateNumberOfSets()
         }
 
-    var numberOfSetsElapsed = 0L
+    var elapsedNumberOfSets = 0L
         set(value) {
             require(value >= 0)
 
@@ -81,17 +81,17 @@ class Counter(context: Context, attrs: AttributeSet) : LinearLayout(context, att
         textTextSwitcher.setText(text)
     }
 
-    private fun updateSetTime() {
-        val time = setTime - setTimeElapsed
-        val minutes = time / 60
-        val seconds = time % 60
+    private fun updateStageTime() {
+        val time = stageTimeMillis - elapsedStageTimeMillis
+        val minutes = (time / SECOND_IN_MILLIS) / 60
+        val seconds = (time / SECOND_IN_MILLIS) % 60
 
         setTimeTextSwitcher.setText("%02d:%02d".format(minutes, seconds))
     }
 
     private fun updateNumberOfSets() {
-        val numberOfSetsElapsed = this.numberOfSetsElapsed + 1
+        val elapsedNumberOfSets = this.elapsedNumberOfSets + 1
 
-        numberOfSetsTextSwitcher.setText("$numberOfSetsElapsed/$numberOfSets")
+        numberOfSetsTextSwitcher.setText("$elapsedNumberOfSets/$numberOfSets")
     }
 }

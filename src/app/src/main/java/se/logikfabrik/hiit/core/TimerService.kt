@@ -22,9 +22,10 @@ class TimerService : Service() {
     }
 
     fun start() {
-        timer?.stop()
+        if (timer == null) {
+            timer = Timer()
+        }
 
-        timer = Timer()
         timer?.start()
     }
 

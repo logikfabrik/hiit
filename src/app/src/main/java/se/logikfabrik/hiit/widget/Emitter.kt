@@ -11,6 +11,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.RelativeLayout
 import java.util.*
 
+const val SECOND_IN_MILLIS = 1000L
 private const val MAX_PULSE_COUNT = 4
 
 // The emitter emits a pulse each time its emit function is called.
@@ -69,7 +70,7 @@ class Emitter(context: Context, attrs: AttributeSet) : RelativeLayout(context, a
             PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 2F),
             PropertyValuesHolder.ofFloat(View.ALPHA, 1F, 0F)
         ).apply {
-            duration = MAX_PULSE_COUNT * 1000L
+            duration = MAX_PULSE_COUNT * SECOND_IN_MILLIS
             interpolator = DecelerateInterpolator()
         }
     }

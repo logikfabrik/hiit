@@ -19,6 +19,8 @@ class Timer {
                 EventBus.getDefault().postSticky(TickEvent(elapsedTimeMillis))
             }
         }, 0, TIMER_PERIOD_MILLIS)
+
+        EventBus.getDefault().postSticky(TickEvent(elapsedTimeMillis))
     }
 
     fun pause() {

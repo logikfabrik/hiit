@@ -11,7 +11,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 
-// The dial animates its arcs as its properties for time, time elapsed, and arc scale are changed.
+// The dial animates its arcs as its properties for time, time elapsed, are changed.
 class Dial(context: Context, attrs: AttributeSet) : View(context, attrs) {
     var timeMillis = 0L
         set(value) {
@@ -70,12 +70,12 @@ class Dial(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private val timeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
         repeatCount = 0
-        duration = 1000
+        duration = SECOND_IN_MILLIS
         interpolator = LinearInterpolator()
     }
     private val stageTimeAnimator: ValueAnimator = ValueAnimator.ofFloat().apply {
         repeatCount = 0
-        duration = 1000
+        duration = SECOND_IN_MILLIS
         interpolator = DecelerateInterpolator()
     }
 
@@ -111,7 +111,7 @@ class Dial(context: Context, attrs: AttributeSet) : View(context, attrs) {
             strokeWidth = 20F
         }
 
-        private val setTimePaint = Paint().apply {
+        private val stageTimePaint = Paint().apply {
             isAntiAlias = true
             color = 0XFF333333.toInt()
             style = Paint.Style.STROKE
@@ -150,8 +150,8 @@ class Dial(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         stageTimeRect = RectF(baseRect).apply {
             inset(
-                timePaint.strokeWidth + (setTimePaint.strokeWidth / 2),
-                timePaint.strokeWidth + (setTimePaint.strokeWidth / 2)
+                timePaint.strokeWidth + (stageTimePaint.strokeWidth / 2),
+                timePaint.strokeWidth + (stageTimePaint.strokeWidth / 2)
             )
         }
     }
@@ -165,7 +165,7 @@ class Dial(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         drawDialOval(canvas)
         drawTotalTimeArc(canvas)
-        drawSetTimeArc(canvas)
+        drawStageTimeArc(canvas)
 
         canvas.restore()
     }
@@ -183,12 +183,12 @@ class Dial(context: Context, attrs: AttributeSet) : View(context, attrs) {
         )
     }
 
-    private fun drawSetTimeArc(canvas: Canvas) {
+    private fun drawStageTimeArc(canvas: Canvas) {
         drawArc(
             canvas,
             stageTimeRect,
             getArcAngle(elapsedStageTimeValue, stageTimeMillis),
-            setTimePaint
+            stageTimePaint
         )
     }
 
